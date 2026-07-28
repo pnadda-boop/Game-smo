@@ -1,6 +1,15 @@
 [gd_scene format=3 uid="uid://d78slahcgoxe"]
 
-[node name="Control" type="CanvasLayer" unique_id=1885224126]
+[ext_resource type="Texture2D" uid="uid://c60nb2ucurfso" path="res://image/smo (2).png" id="1_4sivm"]
+[ext_resource type="FontFile" uid="uid://cu2j0doy2hnhw" path="res://font/2005_iannnnnAMD.ttf" id="2_jb4b6"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pf5cc"]
+bg_color = Color(0.06, 0.06, 0.06, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lo1nx"]
+bg_color = Color(0.29000002, 0.42016655, 1, 1)
+
+[node name="Phone" type="CanvasLayer" unique_id=1885224126]
 
 [node name="Control" type="Control" parent="." unique_id=67268036]
 layout_mode = 3
@@ -10,8 +19,61 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="." unique_id=527247514]
-offset_left = 63.0
-offset_top = 194.0
-offset_right = 491.0
-offset_bottom = 902.0
+[node name="PanelContainer" type="PanelContainer" parent="Control" unique_id=527247514]
+layout_mode = 0
+offset_left = 1107.0
+offset_right = 1717.0
+offset_bottom = 1083.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_pf5cc")
+
+[node name="Header" type="PanelContainer" parent="Control" unique_id=1472657250]
+layout_mode = 0
+offset_left = 1109.0
+offset_right = 1715.0
+offset_bottom = 224.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_lo1nx")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control" unique_id=1581957522]
+layout_mode = 0
+offset_left = 1109.0
+offset_top = 10.0
+offset_right = 1713.0
+offset_bottom = 214.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/HBoxContainer" unique_id=1758701670]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+alignment = 2
+
+[node name="Avatar" type="TextureRect" parent="Control/HBoxContainer/VBoxContainer" unique_id=1280479605]
+custom_minimum_size = Vector2(90, 90)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("1_4sivm")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="Control/HBoxContainer/VBoxContainer" unique_id=1961160652]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_jb4b6")
+theme_override_font_sizes/font_size = 73
+text = "SMO"
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="Control/HBoxContainer/VBoxContainer" unique_id=1203930005]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_jb4b6")
+theme_override_font_sizes/font_size = 47
+text = "7 online"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PanelContainer3" type="PanelContainer" parent="Control" unique_id=731982326]
+layout_mode = 0
+offset_left = 1109.0
+offset_top = 999.0
+offset_right = 1716.0
+offset_bottom = 1083.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_lo1nx")

@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://diwvjw0jr7jua"]
+
+[node name="MessageBubble" type="HBoxContainer" unique_id=267718489]
+offset_left = 1115.0
+offset_top = 49.0
+offset_right = 1711.0
+offset_bottom = 1046.0
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1580480011]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=314275959]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 10
+
+[node name="Label" type="Label" parent="PanelContainer/MarginContainer" unique_id=2138550170]
+layout_mode = 2
+autowrap_mode = 2
