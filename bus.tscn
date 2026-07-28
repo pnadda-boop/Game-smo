@@ -1,0 +1,92 @@
+[gd_scene format=3 uid="uid://er8rqt7mtvey"]
+
+[ext_resource type="Script" uid="uid://dcjs20unqsgoe" path="res://bus.gd" id="1_n5sl8"]
+[ext_resource type="Texture2D" uid="uid://m5mv04mq5ia5" path="res://image/Bus.png" id="1_xlfce"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xlfce"]
+atlas = ExtResource("1_xlfce")
+region = Rect2(0, 160, 224, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4pi5y"]
+atlas = ExtResource("1_xlfce")
+region = Rect2(224, 160, 224, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vfegb"]
+atlas = ExtResource("1_xlfce")
+region = Rect2(448, 160, 224, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3osa5"]
+atlas = ExtResource("1_xlfce")
+region = Rect2(672, 160, 224, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n5sl8"]
+atlas = ExtResource("1_xlfce")
+region = Rect2(0, 0, 224, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ff36x"]
+atlas = ExtResource("1_xlfce")
+region = Rect2(224, 0, 224, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d3dh4"]
+atlas = ExtResource("1_xlfce")
+region = Rect2(448, 0, 224, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dvlo7"]
+atlas = ExtResource("1_xlfce")
+region = Rect2(672, 0, 224, 160)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_4pi5y"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xlfce")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4pi5y")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vfegb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3osa5")
+}],
+"loop": true,
+"name": &"drive",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n5sl8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ff36x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d3dh4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dvlo7")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 6.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xlfce"]
+size = Vector2(206, 68)
+
+[node name="Bus" type="Node2D" unique_id=1266121651]
+script = ExtResource("1_n5sl8")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=589186366]
+y_sort_enabled = true
+position = Vector2(0, -32)
+sprite_frames = SubResource("SpriteFrames_4pi5y")
+animation = &"drive"
+autoplay = "idle"
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1691441692]
+position = Vector2(2, -29)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1054833308]
+shape = SubResource("RectangleShape2D_xlfce")

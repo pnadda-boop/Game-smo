@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://d78slahcgoxe"]
+
+[node name="Control" type="CanvasLayer" unique_id=1885224126]
+
+[node name="Control" type="Control" parent="." unique_id=67268036]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=527247514]
+offset_left = 63.0
+offset_top = 194.0
+offset_right = 491.0
+offset_bottom = 902.0

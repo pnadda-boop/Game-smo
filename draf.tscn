@@ -1,0 +1,49 @@
+[gd_scene format=3 uid="uid://bo1tfifa1hte1"]
+
+[ext_resource type="Texture2D" uid="uid://8utokj3adfn" path="res://TestNPC.png" id="1_eca5q"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xxcha"]
+atlas = ExtResource("1_eca5q")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kh24r"]
+atlas = ExtResource("1_eca5q")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ul7y6"]
+atlas = ExtResource("1_eca5q")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_bc6q4"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xxcha")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kh24r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ul7y6")
+}],
+"loop": true,
+"name": &"talk",
+"speed": 4.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mcvl2"]
+radius = 10.049875
+
+[node name="Draf" type="CharacterBody2D" unique_id=2082106752]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1100485403]
+position = Vector2(0, -26)
+sprite_frames = SubResource("SpriteFrames_bc6q4")
+animation = &"talk"
+autoplay = "talk"
+frame_progress = 0.025205234
+flip_h = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=639312235]
+position = Vector2(0, -20)
+shape = SubResource("CircleShape2D_mcvl2")

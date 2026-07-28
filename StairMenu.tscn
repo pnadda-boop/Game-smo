@@ -1,0 +1,97 @@
+[gd_scene format=3 uid="uid://cyggg5xksqohm"]
+
+[ext_resource type="Script" uid="uid://efpvcx61g5gu" path="res://stair_menu.gd" id="1_ciswg"]
+[ext_resource type="Texture2D" uid="uid://byjkwfg3wdrgk" path="res://image/Arrow.png" id="1_hys00"]
+
+[node name="StairMenu" type="CanvasLayer" unique_id=1412295539]
+script = ExtResource("1_ciswg")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=728214022]
+offset_right = 1904.8652
+offset_bottom = 1061.0
+color = Color(0, 0, 0, 0.6039216)
+
+[node name="arrow" type="TextureRect" parent="ColorRect" unique_id=1277290936]
+layout_mode = 0
+offset_left = 793.0
+offset_top = 441.0
+offset_right = 901.0
+offset_bottom = 549.0
+texture = ExtResource("1_hys00")
+
+[node name="floor3" type="VBoxContainer" parent="ColorRect" unique_id=2138985944]
+z_index = 2
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -39.5
+offset_top = -45.5
+offset_right = 33.5
+offset_bottom = 48.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="level2" type="Label" parent="ColorRect/floor3" unique_id=426781630]
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "ชั้น 2"
+
+[node name="level1" type="Label" parent="ColorRect/floor3" unique_id=1643152210]
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "ชั้น1"
+
+[node name="floor2" type="VBoxContainer" parent="ColorRect" unique_id=695231372]
+visible = false
+z_index = 2
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -39.5
+offset_top = -45.5
+offset_right = 33.5
+offset_bottom = 48.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="level3" type="Label" parent="ColorRect/floor2" unique_id=1983835351]
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "ชั้น 3"
+
+[node name="level1" type="Label" parent="ColorRect/floor2" unique_id=148027739]
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "ชั้น1"
+
+[node name="floor1" type="VBoxContainer" parent="ColorRect" unique_id=938332294]
+visible = false
+z_index = 2
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -39.5
+offset_top = -45.5
+offset_right = 33.5
+offset_bottom = 48.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="level3" type="Label" parent="ColorRect/floor1" unique_id=1166710757]
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "ชั้น 3"
+
+[node name="level2" type="Label" parent="ColorRect/floor1" unique_id=1201076172]
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "ชั้น2"

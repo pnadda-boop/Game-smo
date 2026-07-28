@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://dqp8tmclm5444"]
+
+[ext_resource type="VideoStream" uid="uid://baoriqjotydu8" path="res://VDO/MotionPdo_Test3.ogv" id="1_8ndh1"]
+
+[node name="VideoStreamPlayer" type="VideoStreamPlayer" unique_id=1313744527]
+offset_left = -1202.0
+offset_top = -708.0
+offset_right = 1215.7778
+offset_bottom = 652.0
+stream = ExtResource("1_8ndh1")
+autoplay = true
+loop = true

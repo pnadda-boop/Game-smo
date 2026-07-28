@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://byu8d3klw3pr1"]
+
+[ext_resource type="Script" uid="uid://ekg0vk8ngip" path="res://float_effect.gd" id="1_73y1y"]
+[ext_resource type="FontFile" uid="uid://gcfcbbjdm00c" path="res://font/Porto_Buena.otf" id="1_w4hyk"]
+
+[node name="PromptE" type="Node2D" unique_id=1159835905]
+script = ExtResource("1_73y1y")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=696517971]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -10.5
+offset_top = -13.0
+offset_right = 10.5
+offset_bottom = 8.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.03, 0.03, 0.03, 0.5568628)
+
+[node name="Label" type="Label" parent="." unique_id=526850600]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -18.0
+offset_top = -14.0
+offset_right = 22.0
+offset_bottom = 9.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("1_w4hyk")
+text = "E"
+horizontal_alignment = 1
+vertical_alignment = 1

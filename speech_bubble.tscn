@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://ds4c0u2gngj1g"]
+
+[ext_resource type="Texture2D" uid="uid://1cbdecmmj7k8" path="res://image/Text.png" id="1_gm1uq"]
+[ext_resource type="Script" uid="uid://bbryd00j3ilqw" path="res://speech_bubble.gd" id="1_hxg5a"]
+[ext_resource type="FontFile" uid="uid://cu2j0doy2hnhw" path="res://font/2005_iannnnnAMD.ttf" id="3_ra651"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hxg5a"]
+texture = ExtResource("1_gm1uq")
+texture_margin_left = 5.0
+texture_margin_top = 5.0
+texture_margin_right = 5.0
+texture_margin_bottom = 5.0
+
+[node name="SpeechBubble" type="PanelContainer" unique_id=359710671]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(970, 1067)
+theme_override_styles/panel = SubResource("StyleBoxTexture_hxg5a")
+script = ExtResource("1_hxg5a")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=62677705]
+z_index = 1
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="Label" type="Label" parent="MarginContainer" unique_id=1422093582]
+z_index = 1
+texture_filter = 1
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_ra651")
+theme_override_font_sizes/font_size = 32
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3

@@ -1,0 +1,55 @@
+[gd_scene format=3 uid="uid://bsp1i7or8a6w6"]
+
+[ext_resource type="PackedScene" uid="uid://5yfn2owcevxe" path="res://Game/player/player.tscn" id="1_jcm6v"]
+[ext_resource type="Script" uid="uid://nq4v5yp36x4s" path="res://Game/player/player.gd" id="2_fwxkx"]
+[ext_resource type="PackedScene" uid="uid://dxqii8glctss1" path="res://wawa.tscn" id="3_qmv3x"]
+[ext_resource type="PackedScene" uid="uid://1wtwk5m82gpt" path="res://canvas_layer.tscn" id="4_oomkl"]
+[ext_resource type="PackedScene" uid="uid://lflqqt5f4qyg" path="res://Game/player/smallroom/smallroom.tscn" id="5_fwxkx"]
+[ext_resource type="PackedScene" uid="uid://bo1tfifa1hte1" path="res://draf.tscn" id="6_qmv3x"]
+[ext_resource type="PackedScene" uid="uid://cxnvej73l35pi" path="res://tonkhraw.tscn" id="7_oomkl"]
+
+[node name="Game" type="Node2D" unique_id=2113278777]
+y_sort_enabled = true
+
+[node name="player" parent="." unique_id=225684020 instance=ExtResource("1_jcm6v")]
+y_sort_enabled = true
+position = Vector2(571, 283)
+collision_mask = 17
+script = ExtResource("2_fwxkx")
+
+[node name="Camera2D2" type="Camera2D" parent="player" unique_id=1920548956]
+visible = false
+zoom = Vector2(2, 2)
+limit_left = 278
+limit_top = 0
+limit_right = 835
+limit_bottom = 650
+position_smoothing_speed = 7.0
+rotation_smoothing_enabled = true
+
+[node name="wawa" parent="." unique_id=762897344 instance=ExtResource("3_qmv3x")]
+visible = false
+position = Vector2(461, 479)
+collision_mask = 0
+platform_floor_layers = 4294901761
+platform_wall_layers = 17
+
+[node name="CanvasLayer" parent="." unique_id=1681219766 instance=ExtResource("4_oomkl")]
+visible = false
+
+[node name="smallroom" parent="." unique_id=1672836886 instance=ExtResource("5_fwxkx")]
+y_sort_enabled = true
+
+[node name="NPC" type="Node2D" parent="." unique_id=688716020]
+position = Vector2(423, 523)
+
+[node name="Draf" parent="NPC" unique_id=2082106752 instance=ExtResource("6_qmv3x")]
+y_sort_enabled = true
+position = Vector2(-2, -12)
+
+[node name="Tonkhraw" parent="NPC/Draf" unique_id=1732081561 instance=ExtResource("7_oomkl")]
+y_sort_enabled = true
+position = Vector2(41, 0)
+
+[node name="wawa" parent="NPC" unique_id=1021739417 instance=ExtResource("3_qmv3x")]
+position = Vector2(246, -19)
