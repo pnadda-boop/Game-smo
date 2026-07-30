@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b5v5emd74g0x0"
-path="res://.godot/imported/มีกระเป๋า.png-dec83840983ce75c094472a733a82597.ctex"
+uid="uid://cahitcjv8mi7b"
+path="res://.godot/imported/Jaja.PNG-f31c78ab398f59721403ba56dd844ce2.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://image/มีกระเป๋า.png"
-dest_files=["res://.godot/imported/มีกระเป๋า.png-dec83840983ce75c094472a733a82597.ctex"]
+source_file="res://image_avatar/Jaja.PNG"
+dest_files=["res://.godot/imported/Jaja.PNG-f31c78ab398f59721403ba56dd844ce2.ctex"]
 
 [params]
 

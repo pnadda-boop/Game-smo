@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cp4bhqyiu7ve6"
-path="res://.godot/imported/NPC Align1.PNG-b706a926050a8530b8550456a14c5d90.ctex"
+path="res://.godot/imported/NPC Align1.PNG-9dac1b6a3f7b9a1d911ab5bbb6a5bd75.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://image/align/NPC Align1.PNG"
-dest_files=["res://.godot/imported/NPC Align1.PNG-b706a926050a8530b8550456a14c5d90.ctex"]
+source_file="res://image/align_npc/NPC Align1.PNG"
+dest_files=["res://.godot/imported/NPC Align1.PNG-9dac1b6a3f7b9a1d911ab5bbb6a5bd75.ctex"]
 
 [params]
 

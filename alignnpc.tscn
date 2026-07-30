@@ -1,11 +1,11 @@
 [gd_scene format=3 uid="uid://lg5tgbrl2niq"]
 
-[ext_resource type="Texture2D" uid="uid://ukrm86fulro2" path="res://image/align/NPC Align 6.PNG" id="1_735jw"]
-[ext_resource type="Texture2D" uid="uid://cp4bhqyiu7ve6" path="res://image/align/NPC Align1.PNG" id="1_ki0cm"]
-[ext_resource type="Texture2D" uid="uid://bj2vei0qyaaxx" path="res://image/align/NPC Align2.PNG" id="2_un34l"]
-[ext_resource type="Texture2D" uid="uid://bjhx2hrxtubij" path="res://image/align/NPC Align3.PNG" id="3_xvv8t"]
-[ext_resource type="Texture2D" uid="uid://b3taur6lbj6fk" path="res://image/align/NPC Align4.PNG" id="4_1cbmd"]
-[ext_resource type="Texture2D" uid="uid://d13q511nk0qof" path="res://image/align/NPC Align5.PNG" id="5_mc63v"]
+[ext_resource type="Texture2D" uid="uid://ukrm86fulro2" path="res://image/align_npc/NPC Align 6.PNG" id="1_735jw"]
+[ext_resource type="Texture2D" uid="uid://cp4bhqyiu7ve6" path="res://image/align_npc/NPC Align1.PNG" id="1_ki0cm"]
+[ext_resource type="Texture2D" uid="uid://bj2vei0qyaaxx" path="res://image/align_npc/NPC Align2.PNG" id="2_un34l"]
+[ext_resource type="Texture2D" uid="uid://bjhx2hrxtubij" path="res://image/align_npc/NPC Align3.PNG" id="3_xvv8t"]
+[ext_resource type="Texture2D" uid="uid://b3taur6lbj6fk" path="res://image/align_npc/NPC Align4.PNG" id="4_1cbmd"]
+[ext_resource type="Texture2D" uid="uid://d13q511nk0qof" path="res://image/align_npc/NPC Align5.PNG" id="5_mc63v"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_2ndrl"]
 atlas = ExtResource("1_ki0cm")

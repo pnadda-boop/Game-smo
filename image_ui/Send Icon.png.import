@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b3taur6lbj6fk"
-path="res://.godot/imported/NPC Align4.PNG-40c89eed7787db0507c430a829ccb606.ctex"
+uid="uid://tpxoxw4a1cyk"
+path="res://.godot/imported/Send Icon.png-b948984f420786c33a6829cdbf1ae199.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://image/align/NPC Align4.PNG"
-dest_files=["res://.godot/imported/NPC Align4.PNG-40c89eed7787db0507c430a829ccb606.ctex"]
+source_file="res://image_ui/Send Icon.png"
+dest_files=["res://.godot/imported/Send Icon.png-b948984f420786c33a6829cdbf1ae199.ctex"]
 
 [params]
 

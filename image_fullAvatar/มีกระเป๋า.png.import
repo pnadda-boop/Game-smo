@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d13q511nk0qof"
-path="res://.godot/imported/NPC Align5.PNG-7aac05eb04aef25341dc9fa82fc509f8.ctex"
+uid="uid://b5v5emd74g0x0"
+path="res://.godot/imported/มีกระเป๋า.png-eb53f794fa09f0114f7e449b66a0706f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://image/align/NPC Align5.PNG"
-dest_files=["res://.godot/imported/NPC Align5.PNG-7aac05eb04aef25341dc9fa82fc509f8.ctex"]
+source_file="res://image_fullAvatar/มีกระเป๋า.png"
+dest_files=["res://.godot/imported/มีกระเป๋า.png-eb53f794fa09f0114f7e449b66a0706f.ctex"]
 
 [params]
 
