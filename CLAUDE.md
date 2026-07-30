@@ -23,15 +23,20 @@
 Godot อยู่ที่ `D:\Godot_v4.6.2-stable_win64_console.exe` (ไม่ได้อยู่ใน PATH)
 
 ```bash
-# ตรวจว่าโปรเจกต์ทั้งหมด import ผ่าน / สคริปต์คอมไพล์ได้
+# ✅ วิธีหลัก — ตรวจทั้งโปรเจกต์ คอมไพล์ทุกสคริปต์พร้อม autoload
 "D:\Godot_v4.6.2-stable_win64_console.exe" --headless --path "D:\game-smo" --import
-
-# ตรวจ syntax สคริปต์เดียว
-"D:\Godot_v4.6.2-stable_win64_console.exe" --headless --path "D:\game-smo" --check-only --script "res://NPC.gd"
 
 # รันฉากใดฉากหนึ่งเพื่อดู error ตอน runtime
 "D:\Godot_v4.6.2-stable_win64_console.exe" --headless --path "D:\game-smo" "res://level1.tscn" --quit-after 60
 ```
+
+> ⚠️ **อย่าใช้ `--check-only --script`** — โหมดนี้ **ไม่โหลด autoload** ทำให้สคริปต์ที่อ้างถึง
+> `SeatManager`, `NPCalignDatabase`, `ChatDatabase`, `Global`, `GameState` ขึ้น
+> `Compile Error: Identifier not found` ทั้งที่โค้ดถูกต้องและทำงานได้จริงในเกม
+> (ยืนยันแล้ว: `SeatManager.gd` ที่ใช้งานได้ปกติก็ FAIL ในโหมดนี้) — ใช้ `--import` แทนเสมอ
+
+**เวลาอ่านผล `--import`:** จะมี error เรื่อง TileSet ~4,000 บรรทัดเป็นปกติ (ปัญหาค้าง ดูหัวข้อล่าง)
+ให้กรองออกก่อน แล้วดูเฉพาะ `SCRIPT ERROR` / `Compile Error` / `Parse Error`
 
 ## Autoload (ตั้งใน project.godot แล้ว)
 
@@ -41,6 +46,13 @@ Godot อยู่ที่ `D:\Godot_v4.6.2-stable_win64_console.exe` (ไม�
 | `GameState` | `Game_State.gd` | `next_spawn_point` — บอกฉากปลายทางว่าให้ผู้เล่นโผล่ตรงไหน |
 | `NPCalignDatabase` | `npcalign_database.gd` | ฐานข้อมูล NPC: ชื่อ, บทพูด, เพศ, เงื่อนไขที่นั่ง |
 | `SeatManager` | `SeatManager.gd` | ตัวกลางคุมระบบที่นั่งทั้งหมด + ตรวจเงื่อนไข |
+| `ChatDatabase` | `chat_database.gd` | ทะเบียนผู้ส่งข้อความในกรุ๊ปแชท (ชื่อ + รูป + ฝั่งซ้ายขวา) |
+| `ClickEffect` | `click_effect.tscn` | เอฟเฟกต์วงกลมกระเพื่อม + เสียงตอนคลิก ทำงานทุกซีน |
+
+> 🚨 **เพิ่ม autoload ผ่าน `Project > Project Settings > Globals > Autoload` เท่านั้น**
+> ห้ามเติมบรรทัดลง `project.godot` เอง — Godot อ่านไฟล์นี้ตอนเปิดโปรเจกต์ครั้งเดียว
+> พอผู้ใช้แตะ Project Settings เรื่องใดก็ตาม มันจะเขียนไฟล์ใหม่จากรายการในหน่วยความจำ
+> แล้ว **autoload ที่เติมจากข้างนอกจะถูกลบทิ้งเงียบ ๆ** (เกิดแล้ว 2 ครั้ง — ดู DEVLOG 2026-07-30)
 
 > ⚠️ คอมเมนต์หัวไฟล์ `npcalign_database.gd` บอกให้ตั้งชื่อ autoload ว่า `NPCDatabase` — **เป็นคอมเมนต์เก่าที่ผิด** ชื่อจริงคือ `NPCalignDatabase` (โค้ดที่เรียกใช้ถูกต้องแล้ว)
 
@@ -85,18 +97,92 @@ Constraint satisfaction puzzle: NPC แต่ละตัวมีเงื่�
 **เพิ่ม NPC ใหม่:** แก้ `NPC_DATA` ใน `npcalign_database.gd` ที่เดียว
 **เพิ่มเงื่อนไขใหม่:** เพิ่ม `match` case ใน `_check_single_condition()` (`SeatManager.gd`)
 
-### 2. ระบบบทสนทนา (ทำงานได้แล้ว)
+### 2. ระบบกล่องคำพูด (ทำงานได้แล้ว)
 
-- `DialogData/DialogueData.gd` (`class_name DialogueData`) — Resource เก็บบทพูดเป็น dict: `dialogue_id` → array ของ `{name, text}`
-- `NPC.gd` — เข้าใกล้แล้วขึ้นบับเบิล, กด `interact` (E) แล้ว NPC หันหน้าหาผู้เล่นและเริ่มบทสนทนา
-- NPC หา UI ด้วย `get_tree().get_first_node_in_group("dialogue_ui")` — **node ที่ทำหน้าที่ UI บทสนทนาต้องอยู่ใน group `dialogue_ui`** ไม่งั้น `push_error`
-- ตัวละครที่มีแล้ว: น้ำฟ้า (ตัวเอก), พี่วา, พี่โช
+`Game/dialogue_system.gd` ติดที่ `canvas_layer.tscn` (node ราก `DialogueBox`)
 
-### 3. ระบบแชทข้อความ — ⚠️ ยังเป็น UI เปล่า ยังไม่มีโค้ด
+**รูปแบบบทพูด — กำหนดอนิเมชันต่อบรรทัดได้**
+```gdscript
+{"name": "วาวา",  "text": "อรุณสวัสดิ์จ้า", "anim": "Angry"},
+{"name": "น้ำฟ้า", "text": "สวัสดีค่ะ"},      # ไม่ใส่ anim = ใช้ default_anim ("talk")
+```
 
-- `Phone.tscn` — พาเนลแชทชิดขวาจอ (x 1107–1717), header ฟ้า, avatar โลโก้ SMO, ป้าย "7 online", แถบพิมพ์ข้อความล่าง
-- `message_bubble.tscn` — เทมเพลตบับเบิลข้อความเปล่า (HBox > Panel > Margin > Label)
-- **ยังไม่มีไฟล์ `.gd` ผูกกับทั้งสอง scene, `message_bubble.tscn` ไม่ถูกเรียกใช้ที่ไหน, `Phone.tscn` ยังไม่ถูก instantiate ในฉากไหน**
+**พฤติกรรมสำคัญ: อารมณ์ค้างไว้**
+คนที่ไม่ได้พูดจะ **ย่อลง + มืดลง แต่คงอนิเมชันเดิม** — โกรธค้างจนกว่าจะมีบรรทัดสั่งเปลี่ยน
+ทำได้โดย**ไม่เรียก `play()` กับคนที่ไม่ได้พูด** ห้ามใส่ `sprite.play("idle")` กลับเข้าไป
+
+**สลับโหมดมีรูป/ไม่มีรูป**
+```gdscript
+start_dialogue(lines)               # มีรูปตัวละคร
+start_dialogue(lines, null, false)  # ข้อความล้วน (เสียงบรรยาย/ประกาศ)
+```
+
+**ตัวละครในกล่องคำพูด 4 คน** — key ต้องตรงกับค่า `"name"` ในบทพูดเป๊ะ
+
+| key | node ใต้ `Root/Portraits` |
+|---|---|
+| `"น้ำฟ้า"` | `Namfha` |
+| `"วาวา"` | `Wawa` |
+| `"โชแชง"` | `Chochang` |
+| `"คีริน"` | `Kirin` |
+
+⚠️ **ชื่ออนิเมชันแยกตัวพิมพ์เล็กใหญ่** — ตอนนี้วาวาใช้ `Angry` (ตัวใหญ่) ตัวอื่นเป็นตัวเล็ก
+พิมพ์ผิดจะขึ้น warning บอกชื่อที่ผิดแล้วเล่น `talk` แทน (ไม่ crash)
+
+⚠️ **ใส่กลุ่ม `dialogue_ui` ที่ `DialogueBox` (CanvasLayer) เท่านั้น** ห้ามใส่ node ลูก
+`NPC.gd` หาด้วย `get_first_node_in_group()` ซึ่งอาจคืน node ลูกที่ไม่มีเมธอด `start_dialogue()` แล้ว crash
+
+โครงสร้าง node ทั้งหมด + ค่าที่ต้องตั้ง: ดู [DIALOGUE_UI.md](DIALOGUE_UI.md)
+
+**ทางเข้าบทสนทนา**
+- `NPC.gd` — เข้าใกล้ขึ้นบับเบิล กด `interact` (E) แล้ว NPC หันหน้าหาผู้เล่นและเริ่มคุย
+- เรียกอัตโนมัติตามเนื้อเรื่องได้ด้วย `start_dialogue()` — รองรับซีนที่ไม่มีผู้เล่น (เช่นบนรถเมล์) แล้ว
+- ข้อมูลบทพูดตอนนี้อยู่ใน `DialogData/DialogueData.gd` เป็น **ค่า default ของ `@export`**
+  ⚠️ `Game/player/new_resource.tres` ว่างเปล่าและยืมค่า default นั้น — ถ้าแก้ `dialogues` ใน Inspector
+  Godot จะบันทึกสำเนาลง `.tres` แล้วบทพูดจะแช่แข็ง แก้สคริปต์ไม่มีผลอีก
+
+### 3. ระบบแชทกรุ๊ปสโม (โค้ดเสร็จ — ยังไม่ถูก instantiate ในฉากไหน)
+
+- `chat_database.gd` (autoload `ChatDatabase`) — ทะเบียนผู้ส่ง 7 คน: ชื่อ, รูป avatar, ฝั่งซ้าย/ขวา
+  **เพิ่ม/แก้ตัวละครที่นี่ที่เดียว** บทแชทอ้างด้วย `sender_id` ไม่ใช่ชื่อ
+- `phone.gd` (`Phone.tscn`) — โหลดประวัติแชท, ตัวคั่นเวลา, จัดกลุ่มข้อความติดกัน, auto-scroll
+- `message_bubble.gd` (`message_bubble.tscn`) — บับเบิลหนึ่งใบ: รูป/ชื่อ/ข้อความ/ซ้ายขวา/ความกว้าง
+
+**API หลัก**
+```gdscript
+$Phone.load_history(lines)   # ประวัติเก่า ขึ้นครบทันที
+$Phone.play_chat(lines)      # ข้อความใหม่ ทยอยขึ้นทีละอัน
+await $Phone.show_choices(["ตอบ A", "ตอบ B"])   # ต้องสร้าง node Control/ChoiceContainer ก่อน
+```
+รายการที่มีคีย์ `"time"` = ตัวคั่นเวลา แทรกได้ทุกจุด · น้ำฟ้า (`namfa`) อยู่ฝั่งขวา ไม่โชว์รูปและชื่อ
+
+**แถบพิมพ์ข้อความเป็นของประดับ** — `LineEdit` ตั้ง `focus_mode = NONE` + `mouse_filter = IGNORE` จากโค้ด
+ผู้เล่นพิมพ์เองไม่ได้ ตอนต้องตอบจริงจะใช้ `show_choices()` แทน
+⚠️ **ห้ามตั้ง `line_edit.editable = false`** — LineEdit จะสลับไปใช้ StyleBox ชื่อ `read_only` ไม่ใช่ `normal`
+สไตล์แคปซูลมนที่ตั้งไว้จะหายตอนรัน แล้วหน้าตาไม่ตรงกับที่เห็นใน editor
+
+โครงสร้าง node ทั้งหมด + ค่าที่ต้องตั้ง: ดู [CHAT_UI.md](CHAT_UI.md)
+
+### 4. เอฟเฟกต์คลิก (ใช้งานได้ทุกซีน)
+
+`click_effect.tscn` เป็น autoload `ClickEffect` → วงกลมกระเพื่อม + เสียงคลิก (สุ่มระดับเสียง ±12%)
+ใช้ `_input` ไม่ใช่ `_unhandled_input` เพื่อให้เกิดแม้คลิกโดนปุ่ม และไม่กลืนคลิก (ไม่เรียก `set_input_as_handled()`)
+
+## โครงสร้างโฟลเดอร์ asset
+
+| โฟลเดอร์ | เก็บอะไร |
+|---|---|
+| `image/` | รูปฉาก พื้นหลัง tileset |
+| `image/align_npc/` | สไปรท์ NPC ปริศนาที่นั่ง |
+| `image_avatar/` | รูปโปรไฟล์วงกลมสำหรับแชท (256×256) |
+| `image_fullAvatar/` | รูปครึ่งตัวสำหรับกล่องคำพูด |
+| `image_ui/` | ไอคอน UI |
+| `font/` | ฟอนต์ (`2005_iannnnnAMD.ttf` ใช้ทั้งเกม) |
+| `soud/` · `soud_effects/` | เพลง · เสียงเอฟเฟกต์ |
+
+> ⚠️ ไฟล์ใน `image_avatar/` นามสกุลเป็น **`.PNG` ตัวใหญ่**
+> `res://` ของ Godot เป็น case-sensitive ตอน export แต่ Windows ไม่สน
+> เขียน `.png` จะไม่พังตอนทดสอบ **แต่รูปจะหายตอน build จริง**
 
 ## Input actions ที่ใช้
 
