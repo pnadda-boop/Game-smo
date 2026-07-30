@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://ugr0dhvtk8hb"]
+
+[ext_resource type="Script" uid="uid://d1sx56527qmhl" path="res://ripple.gd" id="1_d8doq"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3t070"]
+corner_radius_top_left = 999
+corner_radius_top_right = 999
+corner_radius_bottom_right = 999
+corner_radius_bottom_left = 999
+
+[node name="Ripple" type="Control" unique_id=1990830834]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_d8doq")
+
+[node name="Circle" type="Panel" parent="." unique_id=1535068430]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_3t070")

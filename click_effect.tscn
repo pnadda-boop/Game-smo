@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://bmxwjs5dtsygq"]
+
+[ext_resource type="Script" uid="uid://cjxlsgsfyqaaq" path="res://click_effect.gd" id="1_lfd7x"]
+[ext_resource type="AudioStream" uid="uid://dhm5s4tg4clml" path="res://soud_effects/click.ogg" id="2_tj2ud"]
+
+[node name="ClickEffect" type="CanvasLayer" unique_id=875459001]
+layer = 100
+script = ExtResource("1_lfd7x")
+
+[node name="Effects" type="Control" parent="." unique_id=1453862119]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="soud" type="AudioStreamPlayer" parent="." unique_id=1054592109]
+stream = ExtResource("2_tj2ud")
+volume_db = -15.0
