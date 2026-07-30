@@ -1,4 +1,6 @@
 extends CharacterBody2D
+
+
 @onready var bubble = $AnimatedSprite2D2
 @onready var sprite = $AnimatedSprite2D
 @onready var player = get_tree().get_first_node_in_group("player")

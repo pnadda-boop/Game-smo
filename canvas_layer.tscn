@@ -1,24 +1,10 @@
 [gd_scene format=3 uid="uid://1wtwk5m82gpt"]
 
 [ext_resource type="Script" uid="uid://db1malvk6gpab" path="res://Game/dialogue_system.gd" id="1_37rai"]
-[ext_resource type="Texture2D" uid="uid://1cbdecmmj7k8" path="res://image/Text.png" id="1_tg4cr"]
-[ext_resource type="Texture2D" uid="uid://ksu4nrsbsscs" path="res://image/New_Wawa.png" id="2_0qrqu"]
-[ext_resource type="Texture2D" uid="uid://b5v5emd74g0x0" path="res://image/มีกระเป๋า.png" id="2_37rai"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_5cw7b"]
-atlas = ExtResource("2_37rai")
-region = Rect2(0, 0, 288, 495)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_dcl8t"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_5cw7b")
-}],
-"loop": true,
-"name": &"idle",
-"speed": 5.0
-}]
+[ext_resource type="Texture2D" uid="uid://ksu4nrsbsscs" path="res://image_fullAvatar/New_Wawa.png" id="2_0qrqu"]
+[ext_resource type="Texture2D" uid="uid://upgriv07pbgq" path="res://image_fullAvatar/Full_Cho.png" id="3_mx0kw"]
+[ext_resource type="Texture2D" uid="uid://c7td7p22b5xvy" path="res://image_fullAvatar/Full_Kirin.png" id="4_w4oxd"]
+[ext_resource type="Texture2D" uid="uid://bxf0t06f47s11" path="res://image_fullAvatar/Full_Namfha.png" id="5_fsbdh"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0qrqu"]
 atlas = ExtResource("2_0qrqu")
@@ -36,6 +22,10 @@ region = Rect2(420, 0, 420, 594)
 atlas = ExtResource("2_0qrqu")
 region = Rect2(420, 594, 420, 594)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_fsbdh"]
+atlas = ExtResource("2_0qrqu")
+region = Rect2(0, 0, 420, 594)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_g3huw"]
 atlas = ExtResource("2_0qrqu")
 region = Rect2(840, 594, 420, 594)
@@ -43,10 +33,6 @@ region = Rect2(840, 594, 420, 594)
 [sub_resource type="AtlasTexture" id="AtlasTexture_280g2"]
 atlas = ExtResource("2_0qrqu")
 region = Rect2(840, 0, 420, 594)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_fsbdh"]
-atlas = ExtResource("2_0qrqu")
-region = Rect2(0, 0, 420, 594)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_as1ww"]
 animations = [{
@@ -63,7 +49,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_mx0kw")
 }],
 "loop": true,
-"name": &"Curious",
+"name": &"curious",
 "speed": 5.0
 }, {
 "frames": [{
@@ -71,7 +57,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_w4oxd")
 }],
 "loop": true,
-"name": &"Happy",
+"name": &"happy",
 "speed": 5.0
 }, {
 "frames": [{
@@ -79,23 +65,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_n6wdb")
 }],
 "loop": true,
-"name": &"HappyTired",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_g3huw")
-}],
-"loop": true,
-"name": &"Tired",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_280g2")
-}],
-"loop": true,
-"name": &"Worried",
+"name": &"happy_tired",
 "speed": 5.0
 }, {
 "frames": [{
@@ -105,78 +75,322 @@ animations = [{
 "loop": true,
 "name": &"idle",
 "speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g3huw")
+}],
+"loop": true,
+"name": &"tired",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_280g2")
+}],
+"loop": true,
+"name": &"worried",
+"speed": 5.0
 }]
 
-[node name="CanvasLayer" type="CanvasLayer" unique_id=1681219766 groups=["dialogue_ui"]]
+[sub_resource type="AtlasTexture" id="AtlasTexture_5cw7b"]
+atlas = ExtResource("3_mx0kw")
+region = Rect2(420, 0, 420, 726)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_as1ww"]
+atlas = ExtResource("3_mx0kw")
+region = Rect2(840, 726, 420, 726)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dcl8t"]
+atlas = ExtResource("3_mx0kw")
+region = Rect2(0, 726, 420, 726)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_robvp"]
+atlas = ExtResource("3_mx0kw")
+region = Rect2(0, 0, 420, 726)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_86mtp"]
+atlas = ExtResource("3_mx0kw")
+region = Rect2(420, 726, 420, 726)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lrj6d"]
+atlas = ExtResource("3_mx0kw")
+region = Rect2(840, 0, 420, 726)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_fkxa7"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5cw7b")
+}],
+"loop": true,
+"name": &"Angry",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_as1ww")
+}],
+"loop": true,
+"name": &"happy",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dcl8t")
+}],
+"loop": true,
+"name": &"happy_tired",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_robvp")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_86mtp")
+}],
+"loop": true,
+"name": &"tired",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lrj6d")
+}],
+"loop": true,
+"name": &"worried",
+"speed": 5.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ml53l"]
+atlas = ExtResource("4_w4oxd")
+region = Rect2(0, 656, 420, 656)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eyv6i"]
+atlas = ExtResource("4_w4oxd")
+region = Rect2(420, 0, 420, 656)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6xvmx"]
+atlas = ExtResource("4_w4oxd")
+region = Rect2(0, 0, 420, 656)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5nuxi"]
+atlas = ExtResource("4_w4oxd")
+region = Rect2(840, 0, 420, 656)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t1ebt"]
+atlas = ExtResource("4_w4oxd")
+region = Rect2(840, 656, 420, 656)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w2blc"]
+atlas = ExtResource("4_w4oxd")
+region = Rect2(420, 656, 420, 656)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wji3x"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ml53l")
+}],
+"loop": true,
+"name": &"Angry",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_as1ww")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eyv6i")
+}],
+"loop": true,
+"name": &"happy",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6xvmx")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5nuxi")
+}],
+"loop": true,
+"name": &"scared",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t1ebt")
+}],
+"loop": true,
+"name": &"tired",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w2blc")
+}],
+"loop": true,
+"name": &"worried",
+"speed": 5.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_07c00"]
+atlas = ExtResource("5_fsbdh")
+region = Rect2(420, 0, 420, 594)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lp2dk"]
+atlas = ExtResource("5_fsbdh")
+region = Rect2(840, 594, 420, 594)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_apljm"]
+atlas = ExtResource("5_fsbdh")
+region = Rect2(0, 594, 420, 594)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4piyb"]
+atlas = ExtResource("5_fsbdh")
+region = Rect2(840, 0, 420, 594)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h8evs"]
+atlas = ExtResource("5_fsbdh")
+region = Rect2(420, 594, 420, 594)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_54dv3"]
+atlas = ExtResource("5_fsbdh")
+region = Rect2(420, 0, 420, 594)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_tg4cr"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_07c00")
+}],
+"loop": true,
+"name": &"considerate",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lp2dk")
+}],
+"loop": true,
+"name": &"happy",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_apljm")
+}],
+"loop": true,
+"name": &"happy_tired",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4piyb")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h8evs")
+}],
+"loop": true,
+"name": &"tired",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_54dv3")
+}],
+"loop": true,
+"name": &"worried",
+"speed": 5.0
+}]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uc0vg"]
+bg_color = Color(0, 0, 0, 0.9372549)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mx0kw"]
+bg_color = Color(0, 0, 0, 0.8666667)
+
+[node name="DialogueBox" type="CanvasLayer" unique_id=1681219766 groups=["dialogue_ui"]]
 script = ExtResource("1_37rai")
 
-[node name="Control" type="Control" parent="." unique_id=1369245732 groups=["dialogue_ui"]]
+[node name="Root" type="Control" parent="." unique_id=1394371885]
 layout_mode = 3
-anchors_preset = 0
-offset_left = 365.0
-offset_top = 466.0
-offset_right = 405.0
-offset_bottom = 506.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 
-[node name="Namfha" type="AnimatedSprite2D" parent="Control" unique_id=147646387]
-position = Vector2(1252.0001, 441.99994)
-scale = Vector2(2.5, 2.5)
-sprite_frames = SubResource("SpriteFrames_dcl8t")
-animation = &"idle"
+[node name="Portraits" type="Node2D" parent="Root" unique_id=1589941656]
 
-[node name="Wawa" type="AnimatedSprite2D" parent="Control" unique_id=649787749]
-position = Vector2(-39, 508)
+[node name="Wawa" type="AnimatedSprite2D" parent="Root/Portraits" unique_id=649787749]
+position = Vector2(325, 951.5)
 scale = Vector2(2.5, 2.5)
 sprite_frames = SubResource("SpriteFrames_as1ww")
-animation = &"idle"
+animation = &"Angry"
 
-[node name="NinePatchRect" type="NinePatchRect" parent="Control" unique_id=2132528598]
+[node name="Chochang" type="AnimatedSprite2D" parent="Root/Portraits" unique_id=931279558]
+position = Vector2(325, 951.5)
+scale = Vector2(2.5, 2.5)
+sprite_frames = SubResource("SpriteFrames_fkxa7")
+animation = &"worried"
+
+[node name="Kirin" type="AnimatedSprite2D" parent="Root/Portraits" unique_id=120774860]
+position = Vector2(421, 1028.5)
+scale = Vector2(2.5, 2.5)
+sprite_frames = SubResource("SpriteFrames_wji3x")
+animation = &"scared"
+
+[node name="Namfha" type="AnimatedSprite2D" parent="Root/Portraits" unique_id=662328210]
+position = Vector2(1697.0001, 943.99994)
+scale = Vector2(2.5, 2.5)
+sprite_frames = SubResource("SpriteFrames_tg4cr")
+animation = &"happy"
+
+[node name="Box" type="VBoxContainer" parent="Root" unique_id=1345441121]
 layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
+anchors_preset = 12
 anchor_top = 1.0
-anchor_right = 0.5
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -215.0
-offset_top = 208.0
-offset_right = 1353.0
-offset_bottom = 415.0
+offset_top = -217.0
 grow_horizontal = 2
 grow_vertical = 0
-texture = ExtResource("1_tg4cr")
-patch_margin_left = 5
-patch_margin_top = 5
-patch_margin_right = 5
-patch_margin_bottom = 5
+theme_override_constants/separation = -6
 
-[node name="NinePatchRect" type="NinePatchRect" parent="Control/NinePatchRect" unique_id=571491529]
-layout_mode = 0
-offset_top = -50.0
-offset_right = 187.49998
-texture = ExtResource("1_tg4cr")
-patch_margin_left = 5
-patch_margin_top = 5
-patch_margin_right = 5
-patch_margin_bottom = 5
-
-[node name="RichTextLabel" type="RichTextLabel" parent="Control" unique_id=1159177637]
-layout_mode = 0
-offset_left = -180.0
-offset_top = 261.0
-offset_right = 1326.0
-offset_bottom = 434.0
-theme_override_font_sizes/normal_font_size = 28
-tab_size = 3
-
-[node name="HBoxContainer" type="HBoxContainer" parent="Control" unique_id=806677994]
-layout_mode = 0
-offset_left = -187.0
-offset_top = 204.0
-offset_right = -18.0
-offset_bottom = 242.0
-alignment = 1
-
-[node name="Label" type="Label" parent="Control/HBoxContainer" unique_id=1120068227 groups=["dialogue_ui"]]
+[node name="NamePlate" type="PanelContainer" parent="Root/Box" unique_id=538883073]
 layout_mode = 2
-theme_override_font_sizes/font_size = 26
-text = "น้ำฟ้า"
+size_flags_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_uc0vg")
+
+[node name="NameLabel" type="Label" parent="Root/Box/NamePlate" unique_id=668302605]
+layout_mode = 2
+
+[node name="TextPanel" type="PanelContainer" parent="Root/Box" unique_id=1216067718]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_mx0kw")
+
+[node name="TextLabel" type="RichTextLabel" parent="Root/Box/TextPanel" unique_id=639612883]
+layout_mode = 2
+bbcode_enabled = true
+scroll_active = false
+autowrap_mode = 3
