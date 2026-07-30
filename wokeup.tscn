@@ -254,12 +254,12 @@ shader_parameter/intensity = 1.0
 shader_parameter/edge_softness = 0.45
 shader_parameter/length_falloff = 0.6
 shader_parameter/shimmer_speed = 0.6
-shader_parameter/shimmer_strength = 0.06000000285
+shader_parameter/shimmer_strength = 0.02000000095
 
 [node name="wokeup" type="Node2D" unique_id=1434578840]
 script = ExtResource("1_c3tih")
 
-[node name="TextureRect" type="TextureRect" parent="." unique_id=80939760]
+[node name="BackCar" type="TextureRect" parent="." unique_id=80939760]
 offset_left = -64.0
 offset_top = -6.0
 offset_right = 1968.9254
@@ -278,7 +278,8 @@ autoplay = "idle"
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="AnimatedSprite2D/Area2D" unique_id=1139725099]
 polygon = PackedVector2Array(-75.652245, -43.054882, -97.7133, -48.49852, -116.9093, -38.041004, -123.06921, -20.993816, -118.48509, 7.370407, -111.89542, 19.117203, -108.02757, 50.059998, -97.7133, 81.43254, -40.5551, 81.14604, -35.970985, 62.093307, -39.409073, 17.971176, -49.150322, 5.0783463, -61.47013, 1.3537521, -64.62171, -29.732292)
 
-[node name="TextureRect2" type="TextureRect" parent="." unique_id=1781675887]
+[node name="Froncar" type="TextureRect" parent="." unique_id=1781675887]
+modulate = Color(0.94592, 0.96, 0.8544, 1)
 offset_left = -100.0
 offset_top = -20.0
 offset_right = 1958.1567
@@ -305,7 +306,8 @@ color = Color(0.85, 0.85, 0.85, 1)
 
 [node name="LightRay" type="Polygon2D" parent="MorningLightEffect" unique_id=312671863]
 material = SubResource("ShaderMaterial_qkwqt")
-polygon = PackedVector2Array(64, 838, 688, 1078, 1485, 1079, 384, -10, 54, 4)
+polygon = PackedVector2Array(390, -20, 56, -5, 53, 851, 1255.3014, 1403.506, 1639, 1165)
+uv = PackedVector2Array(1, 0, 0, 0, 0, 0.39, 0, 1, 1, 1)
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=579146673]
 anchor_mode = 0
