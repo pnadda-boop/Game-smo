@@ -1,21 +1,47 @@
 [gd_scene format=3 uid="uid://diwvjw0jr7jua"]
 
-[node name="MessageBubble" type="HBoxContainer" unique_id=267718489]
-offset_left = 1115.0
-offset_top = 49.0
-offset_right = 1711.0
-offset_bottom = 1046.0
+[ext_resource type="Script" uid="uid://c8ermgpc00mr4" path="res://message_bubble.gd" id="1_ml6xx"]
 
-[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1580480011]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4wa6x"]
+bg_color = Color(0.96, 1, 0.9853333, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[node name="MessageBubble" type="HBoxContainer" unique_id=267718489]
+offset_right = 272.0
+offset_bottom = 201.0
+script = ExtResource("1_ml6xx")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1744696431]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=314275959]
+[node name="Column" type="VBoxContainer" parent="." unique_id=201072227]
+layout_mode = 2
+
+[node name="SenderName" type="Label" parent="Column" unique_id=123307681]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="Column" unique_id=1580480011]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_4wa6x")
+
+[node name="MarginContainer" type="MarginContainer" parent="Column/PanelContainer" unique_id=314275959]
 layout_mode = 2
 theme_override_constants/margin_left = 16
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 10
 
-[node name="Label" type="Label" parent="PanelContainer/MarginContainer" unique_id=2138550170]
+[node name="Content" type="VBoxContainer" parent="Column/PanelContainer/MarginContainer" unique_id=1954328034]
 layout_mode = 2
+
+[node name="Text" type="RichTextLabel" parent="Column/PanelContainer/MarginContainer/Content" unique_id=1000656767]
+layout_mode = 2
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+text = "
+"
+fit_content = true
+scroll_active = false
 autowrap_mode = 2
