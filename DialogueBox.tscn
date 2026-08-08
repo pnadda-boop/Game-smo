@@ -5,6 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://upgriv07pbgq" path="res://image_fullAvatar/Full_Cho.png" id="3_mx0kw"]
 [ext_resource type="Texture2D" uid="uid://c7td7p22b5xvy" path="res://image_fullAvatar/Full_Kirin.png" id="4_w4oxd"]
 [ext_resource type="Texture2D" uid="uid://bxf0t06f47s11" path="res://image_fullAvatar/Full_Namfha.png" id="5_fsbdh"]
+[ext_resource type="FontFile" uid="uid://cu2j0doy2hnhw" path="res://font/2005_iannnnnAMD.ttf" id="6_w4oxd"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0qrqu"]
 atlas = ExtResource("2_0qrqu")
@@ -26,6 +27,10 @@ region = Rect2(420, 594, 420, 594)
 atlas = ExtResource("2_0qrqu")
 region = Rect2(0, 0, 420, 594)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_fkxa7"]
+atlas = ExtResource("2_0qrqu")
+region = Rect2(420, 0, 420, 594)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_g3huw"]
 atlas = ExtResource("2_0qrqu")
 region = Rect2(840, 594, 420, 594)
@@ -41,7 +46,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_0qrqu")
 }],
 "loop": true,
-"name": &"Angry",
+"name": &"angry",
 "speed": 5.0
 }, {
 "frames": [{
@@ -78,6 +83,14 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_fkxa7")
+}],
+"loop": true,
+"name": &"talk",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_g3huw")
 }],
 "loop": true,
@@ -109,6 +122,10 @@ region = Rect2(0, 726, 420, 726)
 atlas = ExtResource("3_mx0kw")
 region = Rect2(0, 0, 420, 726)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_wji3x"]
+atlas = ExtResource("3_mx0kw")
+region = Rect2(840, 726, 420, 726)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_86mtp"]
 atlas = ExtResource("3_mx0kw")
 region = Rect2(420, 726, 420, 726)
@@ -124,7 +141,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_5cw7b")
 }],
 "loop": true,
-"name": &"Angry",
+"name": &"angry",
 "speed": 5.0
 }, {
 "frames": [{
@@ -149,6 +166,14 @@ animations = [{
 }],
 "loop": true,
 "name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wji3x")
+}],
+"loop": true,
+"name": &"talk",
 "speed": 5.0
 }, {
 "frames": [{
@@ -184,6 +209,10 @@ region = Rect2(0, 0, 420, 656)
 atlas = ExtResource("4_w4oxd")
 region = Rect2(840, 0, 420, 656)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_uc0vg"]
+atlas = ExtResource("4_w4oxd")
+region = Rect2(420, 0, 420, 656)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_t1ebt"]
 atlas = ExtResource("4_w4oxd")
 region = Rect2(840, 656, 420, 656)
@@ -199,7 +228,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_ml53l")
 }],
 "loop": true,
-"name": &"Angry",
+"name": &"angry",
 "speed": 5.0
 }, {
 "frames": [{
@@ -227,6 +256,14 @@ animations = [{
 }],
 "loop": true,
 "name": &"scared",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uc0vg")
+}],
+"loop": true,
+"name": &"talk",
 "speed": 5.0
 }, {
 "frames": [{
@@ -261,6 +298,10 @@ region = Rect2(0, 594, 420, 594)
 [sub_resource type="AtlasTexture" id="AtlasTexture_4piyb"]
 atlas = ExtResource("5_fsbdh")
 region = Rect2(840, 0, 420, 594)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lljfd"]
+atlas = ExtResource("5_fsbdh")
+region = Rect2(840, 594, 420, 594)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_h8evs"]
 atlas = ExtResource("5_fsbdh")
@@ -306,6 +347,14 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_lljfd")
+}],
+"loop": true,
+"name": &"talk",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_h8evs")
 }],
 "loop": true,
@@ -322,9 +371,17 @@ animations = [{
 }]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uc0vg"]
+content_margin_left = 20.0
+content_margin_top = 20.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
 bg_color = Color(0, 0, 0, 0.9372549)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mx0kw"]
+content_margin_left = 28.0
+content_margin_top = 28.0
+content_margin_right = 22.0
+content_margin_bottom = 22.0
 bg_color = Color(0, 0, 0, 0.8666667)
 
 [node name="DialogueBox" type="CanvasLayer" unique_id=1681219766 groups=["dialogue_ui"]]
@@ -342,36 +399,45 @@ mouse_filter = 2
 [node name="Portraits" type="Node2D" parent="Root" unique_id=1589941656]
 
 [node name="Wawa" type="AnimatedSprite2D" parent="Root/Portraits" unique_id=649787749]
+visible = false
 position = Vector2(325, 951.5)
 scale = Vector2(2.5, 2.5)
 sprite_frames = SubResource("SpriteFrames_as1ww")
-animation = &"Angry"
+animation = &"talk"
+autoplay = "idle"
 
 [node name="Chochang" type="AnimatedSprite2D" parent="Root/Portraits" unique_id=931279558]
+visible = false
 position = Vector2(325, 951.5)
 scale = Vector2(2.5, 2.5)
 sprite_frames = SubResource("SpriteFrames_fkxa7")
-animation = &"worried"
+animation = &"angry"
+autoplay = "idle"
 
 [node name="Kirin" type="AnimatedSprite2D" parent="Root/Portraits" unique_id=120774860]
+visible = false
 position = Vector2(421, 1028.5)
 scale = Vector2(2.5, 2.5)
 sprite_frames = SubResource("SpriteFrames_wji3x")
-animation = &"scared"
+animation = &"angry"
+autoplay = "idle"
 
 [node name="Namfha" type="AnimatedSprite2D" parent="Root/Portraits" unique_id=662328210]
 position = Vector2(1697.0001, 943.99994)
 scale = Vector2(2.5, 2.5)
 sprite_frames = SubResource("SpriteFrames_tg4cr")
-animation = &"happy"
+animation = &"happy_tired"
+autoplay = "idle"
 
 [node name="Box" type="VBoxContainer" parent="Root" unique_id=1345441121]
 layout_mode = 1
-anchors_preset = 12
+anchors_preset = -1
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 150.0
 offset_top = -217.0
+offset_right = -150.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_constants/separation = -6
@@ -383,6 +449,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_uc0vg")
 
 [node name="NameLabel" type="Label" parent="Root/Box/NamePlate" unique_id=668302605]
 layout_mode = 2
+theme_override_font_sizes/font_size = 28
 
 [node name="TextPanel" type="PanelContainer" parent="Root/Box" unique_id=1216067718]
 custom_minimum_size = Vector2(0, 200)
@@ -391,6 +458,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_mx0kw")
 
 [node name="TextLabel" type="RichTextLabel" parent="Root/Box/TextPanel" unique_id=639612883]
 layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("6_w4oxd")
+theme_override_font_sizes/normal_font_size = 54
 bbcode_enabled = true
 scroll_active = false
-autowrap_mode = 3
