@@ -7,12 +7,13 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_rj3yn"]
 shader = ExtResource("2_7lvy5")
 shader_parameter/progress = 0.0
-shader_parameter/pixel_size = 8.0
+shader_parameter/resolution = Vector2(640, 360)
 
 [node name="SceneTransition" type="CanvasLayer" unique_id=141362112]
 script = ExtResource("1_jiq3i")
 
 [node name="ColorRect2" type="ColorRect" parent="." unique_id=1134477704]
+z_index = 200
 material = SubResource("ShaderMaterial_rj3yn")
 anchors_preset = 15
 anchor_right = 1.0

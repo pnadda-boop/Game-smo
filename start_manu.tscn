@@ -4,19 +4,22 @@
 [ext_resource type="PackedScene" uid="uid://dqp8tmclm5444" path="res://video_stream_player.tscn" id="2_hcmnh"]
 [ext_resource type="VideoStream" uid="uid://cc7nogtyrsg0p" path="res://VDO/Fix.ogv" id="3_odt1j"]
 [ext_resource type="Texture2D" uid="uid://dl81clhcvdeuf" path="res://image/LogoSmogame-01.png" id="4_uxoho"]
-[ext_resource type="FontFile" uid="uid://gcfcbbjdm00c" path="res://font/Porto_Buena.otf" id="5_ket61"]
+[ext_resource type="FontFile" uid="uid://cu2j0doy2hnhw" path="res://font/2005_iannnnnAMD.ttf" id="5_qdhku"]
 [ext_resource type="Script" uid="uid://buvp6qf516svm" path="res://Start.gd" id="6_sisul"]
 [ext_resource type="Texture2D" uid="uid://cpohgwmpumybu" path="res://image/IMG_9353.PNG" id="7_odt1j"]
 [ext_resource type="AudioStream" uid="uid://do7dw1wxigo5o" path="res://soud/WorkStart.ogg" id="8_qdhku"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qdhku"]
+bg_color = Color(0, 0, 0, 0.85882354)
 
 [node name="StartManu" type="CanvasLayer" unique_id=827957943]
 script = ExtResource("1_hcmnh")
 
 [node name="VideoStreamPlayer" parent="." unique_id=1313744527 instance=ExtResource("2_hcmnh")]
-offset_left = -80.0
-offset_top = -56.0
-offset_right = 2010.6667
-offset_bottom = 1120.0
+offset_left = -43.0
+offset_top = -40.0
+offset_right = 1967.6666
+offset_bottom = 1091.0
 size_flags_horizontal = 4
 stream = ExtResource("3_odt1j")
 expand = true
@@ -27,33 +30,44 @@ position = Vector2(952, 544)
 [node name="TextureRect" type="TextureRect" parent="." unique_id=1448333566]
 offset_left = 24.0
 offset_top = 14.0
-offset_right = 371.8308
-offset_bottom = 260.0
+offset_right = 294.06375
+offset_bottom = 205.0
 texture = ExtResource("4_uxoho")
 expand_mode = 1
 
 [node name="Label" type="Label" parent="." unique_id=574253440]
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -242.0
-offset_top = 808.0
-offset_right = 292.0
-offset_bottom = 920.0
-grow_horizontal = 2
+offset_left = 755.0
+offset_top = 811.0
+offset_right = 1143.0
+offset_bottom = 931.0
 pivot_offset = Vector2(215, 57.36)
 size_flags_horizontal = 6
 size_flags_vertical = 8
 mouse_filter = 0
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.972549)
 theme_override_constants/shadow_offset_y = 1
-theme_override_fonts/font = ExtResource("5_ket61")
-theme_override_font_sizes/font_size = 49
+theme_override_fonts/font = ExtResource("5_qdhku")
+theme_override_font_sizes/font_size = 138
 text = "WORK START"
 horizontal_alignment = 1
 vertical_alignment = 1
 script = ExtResource("6_sisul")
 target_scene = "res://wokeup.tscn"
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=784282677]
+visible = false
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -978.0
+offset_top = -269.0
+offset_right = 957.0
+offset_bottom = -149.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_qdhku")
 
 [node name="TextureRect2" type="TextureRect" parent="." unique_id=206738657]
 offset_left = 1801.0
