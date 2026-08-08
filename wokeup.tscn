@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://cp5at3gmrvurp" path="res://camerashaking..gd" id="5_c3tih"]
 [ext_resource type="Script" uid="uid://dacvvoh4yo1gj" path="res://morning_light_effect.gd" id="6_yghn4"]
 [ext_resource type="Shader" uid="uid://b4y6hafnf2vn1" path="res://light_ray.gdshader" id="7_cfiwy"]
+[ext_resource type="AudioStream" uid="uid://0gqrh36cxrpf" path="res://soud/Morning Bus Stop.mp3" id="9_qkwqt"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_vqqmx"]
 atlas = ExtResource("3_8rr8s")
@@ -266,16 +267,16 @@ offset_right = 1968.9254
 offset_bottom = 1122.0
 texture = ExtResource("2_c3tih")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=197799338]
+[node name="wawa" type="AnimatedSprite2D" parent="." unique_id=197799338]
 position = Vector2(1049.1, 548.55)
 scale = Vector2(6.980625, 6.980625)
 sprite_frames = SubResource("SpriteFrames_hfs1y")
-animation = &"idle"
+animation = &" phone"
 autoplay = "idle"
 
-[node name="Area2D" type="Area2D" parent="AnimatedSprite2D" unique_id=1248360143]
+[node name="Area2D" type="Area2D" parent="wawa" unique_id=1248360143]
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="AnimatedSprite2D/Area2D" unique_id=1139725099]
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="wawa/Area2D" unique_id=1139725099]
 polygon = PackedVector2Array(-75.652245, -43.054882, -97.7133, -48.49852, -116.9093, -38.041004, -123.06921, -20.993816, -118.48509, 7.370407, -111.89542, 19.117203, -108.02757, 50.059998, -97.7133, 81.43254, -40.5551, 81.14604, -35.970985, 62.093307, -39.409073, 17.971176, -49.150322, 5.0783463, -61.47013, 1.3537521, -64.62171, -29.732292)
 
 [node name="Froncar" type="TextureRect" parent="." unique_id=1781675887]
@@ -312,3 +313,6 @@ uv = PackedVector2Array(1, 0, 0, 0, 0, 0.39, 0, 1, 1, 1)
 [node name="Camera2D" type="Camera2D" parent="." unique_id=579146673]
 anchor_mode = 0
 script = ExtResource("5_c3tih")
+
+[node name="BG" type="AudioStreamPlayer" parent="." unique_id=1480585423]
+stream = ExtResource("9_qkwqt")

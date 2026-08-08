@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://0gqrh36cxrpf"
+path="res://.godot/imported/Morning Bus Stop.mp3-8da2e4f955cbcf727c72975a4c8532f0.mp3str"
+
+[deps]
+
+source_file="res://soud/Morning Bus Stop.mp3"
+dest_files=["res://.godot/imported/Morning Bus Stop.mp3-8da2e4f955cbcf727c72975a4c8532f0.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
