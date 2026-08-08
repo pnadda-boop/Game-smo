@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="PackedScene" path="res://npc/npc_base.tscn" id="1_base"]
+[ext_resource type="Resource" path="res://npc/data/wawa.tres" id="2_data"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wawa"]
+size = Vector2(20, 12)
+
+[node name="Wawa" instance=ExtResource("1_base")]
+data = ExtResource("2_data")
+
+[node name="CollisionShape2D" parent="." index="1"]
+shape = SubResource("RectangleShape2D_wawa")
