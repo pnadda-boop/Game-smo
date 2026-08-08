@@ -1,0 +1,138 @@
+[gd_scene format=3 uid="uid://bi7g1cmxj5eiu"]
+
+[ext_resource type="Script" uid="uid://cueuq33vnawk0" path="res://chat_group.gd" id="0_grp"]
+[ext_resource type="Texture2D" uid="uid://dmfdcpe2chfw6" path="res://image_ui/ArrowUi.png" id="1_5i75d"]
+[ext_resource type="Texture2D" uid="uid://crn8ypt8yav0f" path="res://image_avatar/Chicken.png" id="2_gq126"]
+[ext_resource type="FontFile" uid="uid://bsrkkuprikvr" path="res://font/PK Nakhon Pathom Demo.ttf" id="2_i8q3t"]
+[ext_resource type="FontFile" uid="uid://cu2j0doy2hnhw" path="res://font/2005_iannnnnAMD.ttf" id="3_i8q3t"]
+[ext_resource type="Texture2D" uid="uid://cp02coyodyu72" path="res://image_ui/sendui (1).png" id="4_n06nv"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pf5cc"]
+bg_color = Color(0.06, 0.06, 0.06, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lo1nx"]
+bg_color = Color(0.33733332, 0.29000002, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_adxtd"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+
+[node name="ChatGroup" type="Control" unique_id=25603187]
+layout_mode = 3
+anchors_preset = 0
+size_flags_horizontal = 4
+script = ExtResource("0_grp")
+choice_font = ExtResource("2_i8q3t")
+choice_font_size = 28
+
+[node name="BG" type="PanelContainer" parent="." unique_id=21264152]
+layout_mode = 0
+offset_left = 1107.0
+offset_top = 37.0
+offset_right = 1707.0
+offset_bottom = 1037.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_pf5cc")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=1765016828]
+layout_mode = 0
+offset_left = 1132.0
+offset_top = 205.0
+offset_right = 1681.0
+offset_bottom = 980.0
+
+[node name="MessageList" type="VBoxContainer" parent="ScrollContainer" unique_id=494075167]
+layout_mode = 2
+
+[node name="BGHeader" type="PanelContainer" parent="." unique_id=920893037]
+layout_mode = 0
+offset_left = 1107.0
+offset_right = 1707.0
+offset_bottom = 194.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_lo1nx")
+
+[node name="Header" type="HBoxContainer" parent="." unique_id=159059303]
+layout_mode = 0
+offset_left = 1109.0
+offset_top = 8.0
+offset_right = 1713.0
+offset_bottom = 194.0
+
+[node name="TextureButton" type="TextureButton" parent="Header" unique_id=1819808707]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+texture_normal = ExtResource("1_5i75d")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Header" unique_id=1765077298]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_constants/separation = -10
+alignment = 2
+
+[node name="Avatar" type="TextureRect" parent="Header/VBoxContainer" unique_id=1257956722]
+custom_minimum_size = Vector2(90, 90)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("2_gq126")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="Header/VBoxContainer" unique_id=1319641154]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_i8q3t")
+theme_override_font_sizes/font_size = 73
+text = "SMO"
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="Header/VBoxContainer" unique_id=1046186415]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_i8q3t")
+theme_override_font_sizes/font_size = 47
+text = "7 online"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Control" type="Control" parent="Header" unique_id=1172641604]
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+
+[node name="Down" type="PanelContainer" parent="." unique_id=52800663]
+layout_mode = 0
+offset_left = 1107.0
+offset_top = 999.0
+offset_right = 1707.0
+offset_bottom = 1083.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_lo1nx")
+
+[node name="InputBar" type="HBoxContainer" parent="Down" unique_id=1530742068]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="LineEdit" type="LineEdit" parent="Down/InputBar" unique_id=1273208614]
+custom_minimum_size = Vector2(450, 44)
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+theme_override_styles/normal = SubResource("StyleBoxFlat_adxtd")
+
+[node name="SendButton" type="Button" parent="Down/InputBar" unique_id=1441563679]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_horizontal = 5
+size_flags_vertical = 5
+theme_override_constants/icon_max_width = 64
+icon = ExtResource("4_n06nv")
+flat = true
+expand_icon = true

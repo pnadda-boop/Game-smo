@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cufe6llm7tks0"
-path="res://.godot/imported/NamkingPF.PNG-0be4987ef459be00289aadc0079046d7.ctex"
+uid="uid://dmfdcpe2chfw6"
+path="res://.godot/imported/ArrowUi.png-9b1f1f66f5e20528792ba3412221b2ac.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://image_avatar/NamkingPF.PNG"
-dest_files=["res://.godot/imported/NamkingPF.PNG-0be4987ef459be00289aadc0079046d7.ctex"]
+source_file="res://image_ui/ArrowUi.png"
+dest_files=["res://.godot/imported/ArrowUi.png-9b1f1f66f5e20528792ba3412221b2ac.ctex"]
 
 [params]
 

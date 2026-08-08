@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://diwvjw0jr7jua"]
 
 [ext_resource type="Script" uid="uid://c8ermgpc00mr4" path="res://message_bubble.gd" id="1_ml6xx"]
+[ext_resource type="FontFile" uid="uid://bsrkkuprikvr" path="res://font/PK Nakhon Pathom Demo.ttf" id="2_wj1xc"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4wa6x"]
 bg_color = Color(0.96, 1, 0.9853333, 1)
@@ -9,7 +10,7 @@ corner_radius_top_right = 20
 corner_radius_bottom_right = 20
 corner_radius_bottom_left = 20
 
-[node name="MessageBubble" type="HBoxContainer" unique_id=267718489]
+[node name="MessageList" type="HBoxContainer" unique_id=267718489]
 offset_right = 272.0
 offset_bottom = 201.0
 script = ExtResource("1_ml6xx")
@@ -22,6 +23,8 @@ layout_mode = 2
 
 [node name="SenderName" type="Label" parent="Column" unique_id=123307681]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_wj1xc")
+theme_override_font_sizes/font_size = 28
 
 [node name="PanelContainer" type="PanelContainer" parent="Column" unique_id=1580480011]
 layout_mode = 2
@@ -40,6 +43,8 @@ layout_mode = 2
 [node name="Text" type="RichTextLabel" parent="Column/PanelContainer/MarginContainer/Content" unique_id=1000656767]
 layout_mode = 2
 theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("2_wj1xc")
+theme_override_font_sizes/normal_font_size = 28
 text = "
 "
 fit_content = true

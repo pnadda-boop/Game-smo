@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://d78slahcgoxe"]
+
+[ext_resource type="Script" uid="uid://bwtrlokqv5xti" path="res://phone.gd" id="1_3pxon"]
+[ext_resource type="PackedScene" uid="uid://bi7g1cmxj5eiu" path="res://chat_group.tscn" id="2_tj37y"]
+
+[node name="Chat" type="CanvasLayer" unique_id=1885224126]
+script = ExtResource("1_3pxon")
+
+[node name="Group_smo" parent="." unique_id=25603187 instance=ExtResource("2_tj37y")]
+
+[node name="Group_sawat" parent="." unique_id=714395449 instance=ExtResource("2_tj37y")]
+group_id = "sawat"

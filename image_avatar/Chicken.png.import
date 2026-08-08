@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://oxv0kbdfa5da"
-path="res://.godot/imported/colver.PNG-8bc0db8ccfe9c637f803bca9904e00c2.ctex"
+uid="uid://crn8ypt8yav0f"
+path="res://.godot/imported/Chicken.png-d7926b65800349d9abc987b80c04a89a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://image_avatar/colver.PNG"
-dest_files=["res://.godot/imported/colver.PNG-8bc0db8ccfe9c637f803bca9904e00c2.ctex"]
+source_file="res://image_avatar/Chicken.png"
+dest_files=["res://.godot/imported/Chicken.png-d7926b65800349d9abc987b80c04a89a.ctex"]
 
 [params]
 

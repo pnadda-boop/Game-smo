@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bymjr0ruccmti"
-path="res://.godot/imported/Jaja.png-45d5936ac2bdc6be03043eb2fc2973c8.ctex"
+uid="uid://d0xa5p1dmqnhx"
+path="res://.godot/imported/chochang.png-e0873dce5858ef22c2cec6b04282a8ad.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://image_avatar/Jaja.png"
-dest_files=["res://.godot/imported/Jaja.png-45d5936ac2bdc6be03043eb2fc2973c8.ctex"]
+source_file="res://image_avatar/chochang.png"
+dest_files=["res://.godot/imported/chochang.png-e0873dce5858ef22c2cec6b04282a8ad.ctex"]
 
 [params]
 

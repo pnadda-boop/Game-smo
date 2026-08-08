@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cfshdf64deguj"
-path="res://.godot/imported/cat.PNG-6517f663422d0fe44e23110ff71a762e.ctex"
+uid="uid://cv2hgcw55ubkt"
+path="res://.godot/imported/Namking.png-9edee171b3f5d6bef9700fb5235cccda.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://image_avatar/cat.PNG"
-dest_files=["res://.godot/imported/cat.PNG-6517f663422d0fe44e23110ff71a762e.ctex"]
+source_file="res://image_avatar/Namking.png"
+dest_files=["res://.godot/imported/Namking.png-9edee171b3f5d6bef9700fb5235cccda.ctex"]
 
 [params]
 

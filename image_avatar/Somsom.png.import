@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://tpxoxw4a1cyk"
-path="res://.godot/imported/Send Icon.png-b948984f420786c33a6829cdbf1ae199.ctex"
+uid="uid://df3xirs3wklce"
+path="res://.godot/imported/Somsom.png-89b7d9bf0dc2c7a2e50ad916bc89bb60.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://image_ui/Send Icon.png"
-dest_files=["res://.godot/imported/Send Icon.png-b948984f420786c33a6829cdbf1ae199.ctex"]
+source_file="res://image_avatar/Somsom.png"
+dest_files=["res://.godot/imported/Somsom.png-89b7d9bf0dc2c7a2e50ad916bc89bb60.ctex"]
 
 [params]
 

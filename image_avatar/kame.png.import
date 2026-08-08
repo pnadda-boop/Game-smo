@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://weaklbyk13fq"
-path="res://.godot/imported/WawaPF.PNG-70ee51b877dd246b2b01c6c6a1009a78.ctex"
+uid="uid://dlsmhf2l77a3r"
+path="res://.godot/imported/kame.png-8dd43bad8e48299b6c89b00c01d6420f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://image_avatar/WawaPF.PNG"
-dest_files=["res://.godot/imported/WawaPF.PNG-70ee51b877dd246b2b01c6c6a1009a78.ctex"]
+source_file="res://image_avatar/kame.png"
+dest_files=["res://.godot/imported/kame.png-8dd43bad8e48299b6c89b00c01d6420f.ctex"]
 
 [params]
 
