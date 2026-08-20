@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://baby8gcwhnjgu"]
+
+[ext_resource type="PackedScene" uid="uid://cm3cgot182ht2" path="res://level_2.tscn" id="1_mm3hi"]
+[ext_resource type="PackedScene" uid="uid://d0u07argkxppl" path="res://level_2_1.tscn" id="2_wgnii"]
+[ext_resource type="PackedScene" path="res://npc/scenes/cho.tscn" id="3_xmjne"]
+
+[node name="AllLevel2" type="Node2D" unique_id=132048788]
+y_sort_enabled = true
+
+[node name="Level2" parent="." unique_id=1475612544 instance=ExtResource("1_mm3hi")]
+
+[node name="Level2_1" parent="." unique_id=1266264737 instance=ExtResource("2_wgnii")]
+y_sort_enabled = true
+
+[node name="level2_2" type="Node2D" parent="." unique_id=270727115]
+y_sort_enabled = true
+
+[node name="Cho" parent="level2_2" unique_id=182425063 instance=ExtResource("3_xmjne")]
+position = Vector2(147, 1482)
+initial_facing = null

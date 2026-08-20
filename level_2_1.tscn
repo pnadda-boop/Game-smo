@@ -1,0 +1,69 @@
+[gd_scene format=3 uid="uid://d0u07argkxppl"]
+
+[ext_resource type="Texture2D" uid="uid://bsgychmhvjtp8" path="res://image/Box.png" id="1_esdcw"]
+[ext_resource type="Script" uid="uid://1sso8rlms6yq" path="res://scripts/drop_zone_hint.gd" id="1_ikk3k"]
+[ext_resource type="Script" uid="uid://mo7k22pku8hy" path="res://scripts/box_drop_point.gd" id="3_psh6i"]
+[ext_resource type="Script" uid="uid://cf1td3d63gfov" path="res://scripts/chat_event_trigger.gd" id="4_psh6i"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_psh6i"]
+size = Vector2(224, 235)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ms6nw"]
+atlas = ExtResource("1_esdcw")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0my4k"]
+atlas = ExtResource("1_esdcw")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_o6u5u"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ms6nw")
+}],
+"loop": true,
+"name": &"nearby",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0my4k")
+}],
+"loop": true,
+"name": &"normal",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_g6e3e"]
+radius = 50.01
+
+[node name="Level2_1" type="Node2D" unique_id=1266264737]
+
+[node name="RoomBox" type="Area2D" parent="." unique_id=1598214579]
+position = Vector2(632, 2085)
+script = ExtResource("1_ikk3k")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RoomBox" unique_id=1120966200]
+position = Vector2(-8, 106.5)
+shape = SubResource("RectangleShape2D_psh6i")
+
+[node name="Line2D" type="Line2D" parent="RoomBox" unique_id=1046561003]
+points = PackedVector2Array(-16, -3, 16, -3, 16, 16, -16, 16, -16, -1)
+closed = true
+width = 1.035
+default_color = Color(0.98301715, 0.9208163, 0.8905243, 1)
+
+[node name="Box" type="AnimatedSprite2D" parent="." unique_id=1247589634]
+position = Vector2(632, 2085)
+sprite_frames = SubResource("SpriteFrames_o6u5u")
+animation = &"normal"
+script = ExtResource("3_psh6i")
+
+[node name="InteractArea" type="Area2D" parent="Box" unique_id=2084005275]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Box/InteractArea" unique_id=1139961197]
+shape = SubResource("CircleShape2D_g6e3e")
+
+[node name="BoxChatTrigger" type="Node" parent="." unique_id=432219209]
+script = ExtResource("4_psh6i")
