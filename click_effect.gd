@@ -44,12 +44,52 @@ func _input(event: InputEvent) -> void:
 		_play_click_sound()
 
 
+## จำนวนวงกลมสูงสุดที่เก็บไว้ใช้ซ้ำ
+##
+## คลิกรัวจนวงซ้อนกันเกินนี้ = เอาใบเก่าสุดมาเริ่มใหม่ทับ (ตัดวงเก่าทิ้งกลางคัน)
+## ตาเห็นไม่ออกอยู่แล้วเพราะใบเก่าสุดจางจนเกือบหายไปแล้ว
+const MAX_RIPPLES := 12
+
+## วงกลมทั้งหมดที่เคยสร้าง — ใบที่ `visible = false` คือใบที่ว่าง หยิบมาใช้ได้
+##
+## 🚨 **ใช้ซ้ำ ไม่ได้สร้างใหม่ทุกคลิก** — `ripple.gd` จบแล้ว `hide()` ตัวเอง ไม่ได้ `queue_free()`
+## ฉากปลุกน้ำฟ้าต้องกดรัว 20-30 ที การสร้าง/ทิ้งโหนดทุกคลิกคือการจ่ายฟรี
+## และถ้าปล่อยให้สร้างใหม่เรื่อย ๆ โดยไม่มีใครลบ (เพราะไม่ queue_free แล้ว)
+## โหนดจะกองสะสมใน autoload ตลอดทั้งเกม
+var _ripples: Array[Control] = []
+
+
 func _spawn_ripple(pos: Vector2) -> void:
-	if effects == null:
+	var ripple := _take_free_ripple()
+	if ripple == null:
 		return
-	var ripple := RIPPLE.instantiate()
-	effects.add_child(ripple)
-	ripple.global_position = pos
+	ripple.play(pos)
+
+
+## หาวงที่ว่างอยู่ ไม่มีก็สร้างเพิ่ม จนกว่าจะครบเพดาน
+func _take_free_ripple() -> Control:
+	if effects == null:
+		return null
+
+	for ripple: Control in _ripples:
+		if not ripple.visible:
+			return ripple
+
+	if _ripples.size() >= MAX_RIPPLES:
+		## เต็มเพดาน -> วนเอาใบหัวแถว (ใบที่เริ่มเล่นนานที่สุด) มาใช้ซ้ำ
+		## `play()` ฆ่า tween เก่าให้เองอยู่แล้ว
+		var oldest: Control = _ripples.pop_front()
+		_ripples.append(oldest)
+		return oldest
+
+	var fresh: Control = RIPPLE.instantiate()
+	effects.add_child(fresh)
+	if not fresh.has_method("play"):
+		push_error("click_effect.gd: `ui_ripple.tscn` ไม่มีเมธอด `play()` — แนบ ripple.gd ที่โหนดรากหรือยัง")
+		return null
+
+	_ripples.append(fresh)
+	return fresh
 
 
 ## เล่นเสียงคลิก

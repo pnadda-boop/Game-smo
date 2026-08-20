@@ -1,19 +1,14 @@
 [gd_scene format=3 uid="uid://ugr0dhvtk8hb"]
 
 [ext_resource type="Script" uid="uid://d1sx56527qmhl" path="res://ripple.gd" id="1_d8doq"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3t070"]
-corner_radius_top_left = 999
-corner_radius_top_right = 999
-corner_radius_bottom_right = 999
-corner_radius_bottom_left = 999
+[ext_resource type="Script" uid="uid://dnsl4rf7cp75q" path="res://circle.gd" id="2_3t070"]
 
 [node name="Ripple" type="Control" unique_id=1990830834]
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_d8doq")
 
-[node name="Circle" type="Panel" parent="." unique_id=1535068430]
+[node name="Circle" type="Control" parent="." unique_id=2097108368]
 custom_minimum_size = Vector2(20, 20)
 layout_mode = 1
 anchors_preset = 8
@@ -28,4 +23,4 @@ offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_3t070")
+script = ExtResource("2_3t070")
