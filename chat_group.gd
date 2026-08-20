@@ -78,6 +78,12 @@ const DIVIDER_FONT := preload("res://font/2005_iannnnnAMD.ttf")
 @export var choice_text_color: Color = Color(1, 1, 1, 1)
 ## สีตอนเอาเมาส์ชี้ - ทึบขึ้นเพื่อบอกว่ากำลังจะกดอันนี้
 @export var choice_hover_bg: Color = Color(0.33733332, 0.29000002, 1, 1)
+## ระยะขอบในปุ่ม — ขอบกล่องถึงตัวอักษร (เดิม hardcode ไว้ที่ 16 / 10)
+##
+## ⚠️ `_make_choice_button()` บวก `choice_padding_h * 2` เข้าไปในความกว้างที่ปักไว้ด้วย
+## ปุ่มเปิด autowrap ซึ่งมี minimum width เกือบศูนย์ — ไม่บวกเผื่อ ข้อความจะตกบรรทัดเร็วกว่าที่ควร
+@export var choice_padding_h: float = 16.0
+@export var choice_padding_v: float = 10.0
 ## เวลาที่ตัวเลือกค่อย ๆ จางเข้ามา
 @export var choice_fade_time: float = 0.25
 @export_group("")
@@ -497,8 +503,9 @@ func _make_choice_button(text: String) -> Button:
 		var widest := 0.0
 		for line in text.split("\n"):
 			widest = maxf(widest, font.get_string_size(line, HORIZONTAL_ALIGNMENT_LEFT, -1, choice_font_size).x)
-		## +32 เผื่อ content margin ซ้ายขวาของ StyleBox
-		btn.custom_minimum_size.x = minf(widest + 32.0, choice_max_width)
+		## บวกระยะขอบซ้ายขวาของ StyleBox กลับเข้าไป (เดิมเป็นเลข 32 ตายตัว = 16 × 2)
+		## อ่านจาก @export ตัวเดียวกับที่ _choice_style() ใช้ ปรับระยะขอบแล้วความกว้างตามเอง
+		btn.custom_minimum_size.x = minf(widest + choice_padding_h * 2.0, choice_max_width)
 
 	btn.add_theme_stylebox_override("normal", _choice_style(choice_bg))
 	btn.add_theme_stylebox_override("hover", _choice_style(choice_hover_bg))
@@ -514,10 +521,10 @@ func _choice_style(bg: Color) -> StyleBoxFlat:
 	sb.border_color = choice_border
 	sb.set_border_width_all(3)
 	sb.set_corner_radius_all(20)
-	sb.content_margin_left = 16
-	sb.content_margin_right = 16
-	sb.content_margin_top = 10
-	sb.content_margin_bottom = 10
+	sb.content_margin_left = choice_padding_h
+	sb.content_margin_right = choice_padding_h
+	sb.content_margin_top = choice_padding_v
+	sb.content_margin_bottom = choice_padding_v
 	return sb
 
 

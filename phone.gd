@@ -64,6 +64,11 @@ signal view_changed(group_id: String)
 @export var end_intro_id: String = "arrive_bus"
 @export_group("")
 
+## 🚨 **ไม่สั่งเปลี่ยนเพลงประจำช่วงที่นี่โดยตั้งใจ**
+## ฉาก `wokeup` มีเพลงของตัวเอง (โหนด `BG` ในซีน) — สั่งเพลงใหม่ตรงนี้จะเริ่มดัง
+## ตั้งแต่ยังอยู่ในฉากนี้ ซ้อนกับเพลงเดิมระหว่างเฟด
+## เพลงประจำช่วงถัดไปถูกสั่งที่ **ฉากปลายทาง** แทน (`parking.gd`) — ดู CLAUDE.md หัวข้อเสียง
+
 const SCENE_TRANSITION := preload("res://scene_transition.tscn")
 
 ## หน้ารายการแชท (ไม่บังคับ - ยังไม่มีก็ทำงานได้)
