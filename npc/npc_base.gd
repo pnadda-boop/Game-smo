@@ -144,6 +144,22 @@ enum Facing { DEFAULT, DOWN, UP, LEFT, RIGHT }
 ## สองอันนี้เป็นคนละความตั้งใจ: `talk_once` = "พูดจบแล้วเงียบ" · ตัวนี้ = "พูดจบแล้วเปลี่ยนเรื่อง"
 @export var dialogue_id_after: String = ""
 
+## ชื่อธง**บูล**ใน `GameState` — เป็นจริงเมื่อไหร่ NPC ตัวนี้ **หายไปจากฉาก** (ว่าง = อยู่ตลอด)
+##
+## ใช้กับตัวละครที่ทำหน้าที่ของตัวเองในบทเสร็จแล้วไม่ควรยืนค้างอยู่
+## ตอนนี้: วาวาที่ `decor/under_ch_1.tscn` ตั้ง `box_delivered` — ยังคุยฝากกล่องได้ตามปกติ
+## แล้วหายไปหลังน้ำฟ้าเอากล่องไปวางถึงที่
+##
+## 🚨 **ตั้งที่โหนดในซีน ไม่ใช่ใน `.tres`** (กฎเดียวกับ `dialogue_id_override`)
+## `wawa.tres` ใบเดียวถูกใช้โดยวาวาสองคน และสองคนนี้ต้องทำ**ตรงข้ามกัน**:
+## คนที่ห้องใต้ตึก *หาย* ตอน `box_delivered` · คนที่ชั้น 2 *โผล่* หลังจากนั้น
+## เอาไปไว้ใน `.tres` เมื่อไหร่ วาวาชั้น 2 จะถูกซ่อนทันทีที่โผล่
+##
+## ⚠️ **ซ่อน ไม่ใช่ `queue_free()`** — ธงพลิกกลับได้ และการลบโหนดทิ้งกลางฉาก
+## จะทำให้ทุกคนที่ถือ reference ไว้ (`player.nearby_targets` · กล่องที่รอสัญญาณ) ถือของที่ตายแล้ว
+## · `can_interact()` เช็ค `is_visible_in_tree()` อยู่แล้ว ซ่อนแล้วจึงคุยไม่ได้ไปในตัว
+@export var hide_if: String = ""
+
 ## เคยคุยไปแล้วหรือยัง — มีผลเมื่อ `talk_once` เปิดเท่านั้น
 var _talked: bool = false
 
@@ -397,15 +413,39 @@ func _setup_quest() -> void:
 	GameState.flag_changed.connect(_on_state_flag_changed)
 
 	_refresh_quest_icon()
+	_refresh_presence()
 
 
 ## ธงใน `GameState` ขยับ — สลับไอคอนบนหัวทันทีถ้าเป็นธงที่เราสนใจ
 func _on_state_flag_changed(flag_name: String) -> void:
+	if flag_name == hide_if.strip_edges():
+		_refresh_presence()
+
 	if data == null:
 		return
 	if flag_name != data.quest_if.strip_edges() and flag_name != data.quest_unless.strip_edges():
 		return
 	_refresh_head_icon()
+
+
+## อยู่ในฉากตอนนี้ไหม — ตัดสินจากธง `hide_if`
+##
+## ⚠️ อ่านค่าตอน `_ready()` ด้วย ไม่ใช่รอสัญญาณอย่างเดียว — ผู้เล่นเดินออกจากฉาก
+## แล้วกลับเข้ามาใหม่ NPC ถูกสร้างใหม่ทั้งตัว สัญญาณยิงไปตั้งแต่ตอนวางกล่องแล้ว
+## ไม่อ่านค่าปัจจุบัน = วาวาจะกลับมายืนอยู่ทุกครั้งที่เดินกลับเข้าห้อง
+func _refresh_presence() -> void:
+	var flag: String = hide_if.strip_edges()
+	if flag.is_empty():
+		return
+
+	if not flag in GameState:
+		if not _warned_quest_flag:
+			_warned_quest_flag = true
+			push_error("npc_base.gd: `%s` ตั้ง `Hide If` = '%s' แต่ไม่มีตัวแปรชื่อนี้ใน GameState" \
+				% [name, flag])
+		return
+
+	visible = not bool(GameState.get(flag))
 
 
 ## ตัดสินใหม่ว่าตอนนี้บนหัวควรมีอะไร — ใช้ตอนสถานะเปลี่ยนกลางคัน
