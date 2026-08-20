@@ -7,3 +7,6 @@
 *.exe
 *.pck
 export_presets.cfg
+
+# ค่าตั้งเฉพาะเครื่อง (permission ของ Claude Code) ไม่ต้องแชร์
+.claude/settings.local.json
