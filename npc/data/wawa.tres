@@ -229,4 +229,5 @@ animations = [{
 script = ExtResource("1_data")
 display_name = "วาวา"
 dialogue_id = "wawa_intro"
+quest_if = "cho_asked_help"
 frames = SubResource("SpriteFrames_74owv")

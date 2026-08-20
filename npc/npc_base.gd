@@ -373,8 +373,15 @@ func _setup_quest() -> void:
 		quest.texture = _quest_icon_texture()
 	quest.scale = _quest_icon_scale()
 
-	## ช่อง `Visible` ของโหนดในซีน = "NPC ตัวนี้มีเควสไหม"
-	_quest_wanted = quest.visible
+	## "NPC ตัวนี้มีไอคอนเควสไหม" — เปิดได้ 2 ทาง
+	##
+	## 1. ติ๊ก `Visible` ของโหนด `Quest` ในซีน (เปิดรายตัว/รายฉาก)
+	## 2. ตั้งเงื่อนไขเควสไว้ใน `.tres` — ถือเป็นการประกาศชัด ๆ ว่าตัวละครนี้มีเควส
+	##
+	## 🚨 **ข้อ 2 ต้องชนะช่อง `Visible` ที่ติ๊กออกไว้** — ไม่งั้นจะเป็นสวิตช์สองชั้น
+	## ที่ตั้ง `quest_if` ใน `.tres` ครบแล้วแต่ไอคอนไม่ขึ้น **โดยไม่มีอะไรบอกว่าทำไม**
+	## (เกิดจริง: `wawa.tscn` ติ๊ก `Visible` ออก แล้วเงื่อนไขใน `.tres` กลายเป็นโค้ดที่ตายแล้ว)
+	_quest_wanted = quest.visible or _has_quest_condition()
 
 	## 🚨 **ต้องฟังสัญญาณ ไม่ใช่อ่านค่าตอน `_ready()` ครั้งเดียว**
 	## โชแชงอยู่ในซีนเดียวกับจุดวางกล่อง (`all_level_2`) ผู้เล่นวางกล่องเสร็จ
@@ -680,6 +687,16 @@ func _process(delta: float) -> void:
 func can_interact() -> bool:
 	if data == null or not data.can_interact:
 		return false
+
+	## 🚨 **มองไม่เห็น = คุยไม่ได้** — กลุ่มที่รอเนื้อเรื่องอยู่ (`scripts/story_group.gd`)
+	## ซ่อนตัวด้วยการปิด `visible` ของโหนดแม่ · ตัว NPC ยังอยู่ในซีนและ `InteractArea`
+	## ยังจับผู้เล่นได้ตามปกติ **ไม่เช็คตรงนี้ = เดินไปกด E คุยกับวาวาที่ยังมองไม่เห็นได้**
+	##
+	## ⚠️ ใช้ `is_visible_in_tree()` ไม่ใช่ `visible` — ตัว NPC เองยัง `visible = true`
+	## อยู่เสมอ คนที่ถูกปิดคือโหนดแม่ที่ห่อกลุ่มไว้
+	if not is_visible_in_tree():
+		return false
+
 	## มีบทสำรองแล้วคุยได้เสมอ — `talk_once` ถูกทับด้วยความตั้งใจ (ดูคำอธิบายที่ `dialogue_id_after`)
 	if not dialogue_id_after.is_empty():
 		return true

@@ -84,6 +84,18 @@ var has_bread: bool = false:
 		has_bread = value
 		flag_changed.emit("has_bread")
 
+## โชฝากงาน "ไปช่วยพี่คนอื่นจัดน้องที่ห้องประชุม" แล้ว
+##
+## ตั้งท้ายบท `Cho_break` หลังประโยค *"ได้ค่ะ ไว้หนูจะไปค่ะ"* จบพอดี
+## → กลุ่ม NPC ที่รอเนื้อเรื่องอยู่ (วาวา ฯลฯ) ถึงจะโผล่เข้าฉาก
+## ดู `scripts/story_group.gd`
+var cho_asked_help: bool = false:
+	set(value):
+		if value == cho_asked_help:
+			return
+		cho_asked_help = value
+		flag_changed.emit("cho_asked_help")
+
 ## ==============================================
 ## บทของเนื้อเรื่องตอนนี้ (1 = บทแรก)
 ## ==============================================
