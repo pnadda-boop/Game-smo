@@ -866,10 +866,34 @@ npc/
 
 | ชั้น | `collision_layer` | `collision_mask` |
 |---|---|---|
-| `NPCBase` | 4 | 1 |
+| `NPCBase` | 4 (**Layer 3**) | 1 |
 | `InteractArea` | 0 | 1 (`monitorable = false`) |
 
 ผู้เล่นอยู่ layer 1 + กลุ่ม `"player"` → `InteractArea` จับเจอ
+
+#### 🚨 เดินชน NPC — `player.gd` เปิดบิต 4 ให้ `collision_mask` เอง (แก้ 2026-08-21)
+
+**เดิมผู้เล่นเดินทะลุ NPC ทุกฉาก** เพราะ **ทุกซีนตั้ง `collision_mask` ของผู้เล่นเอง
+และตั้งไม่ตรงกัน — ไม่มีซีนไหนเปิดบิต 4 เลย**
+
+| ซีน | `collision_mask` ที่ override ไว้ | ชนอะไรได้ |
+|---|---|---|
+| `Game/player/player.tscn` (ต้นฉบับ) | **ไม่ได้ตั้ง** → default 1 | layer 1 |
+| `under.tscn` · `level_2.tscn` | 16 | กำแพงอย่างเดียว |
+| `level1.tscn` | 17 | layer 1 + กำแพง |
+| `p.tscn` | 17 (+ `collision_layer` = 17) | layer 1 + กำแพง |
+
+🚨 **แก้ที่ `player.tscn` ที่เดียวไม่พอ — override ที่ instance ชนะค่าจากซีนต้นฉบับเสมอ**
+`player.gd._ready()` จึงเรียก `_ensure_npc_collision()` ซึ่งทำ `collision_mask |= 4`
+ได้ผลทุกฉากรวมถึงฉากที่ยังไม่ได้สร้าง
+
+⚠️ **`|=` ไม่ใช่ `=`** — ทับทื่อ ๆ จะลบบิตกำแพง (16) ทิ้ง **แล้วผู้เล่นจะเดินทะลุกำแพงแทน**
+⚠️ **ทางที่สะอาดกว่าคือไล่ลบ `collision_mask` ที่ override ไว้ทั้ง 4 ซีนทิ้ง** แล้วตั้งค่าเดียว
+ที่ `player.tscn` — ยังไม่ทำเพราะต้องแก้ `.tscn` 4 ไฟล์ และยังไม่รู้ว่าทำไม `p.tscn`
+ถึงตั้ง `collision_layer = 17` (อาจตั้งใจ อาจเผลอ)
+
+⚠️ **`npc_base.tscn` ไม่มีบรรทัด `collision_mask` แล้ว** (Godot ตัดทิ้งตอน resave เพราะเป็น
+ค่า default 1) — **ไม่ได้แปลว่าหาย** ค่ายังเป็น 1 เหมือนเดิม
 
 **ชื่ออนิเมชันตั้งได้รายตัวใน `NPCData`** (`default_anim` · `anim_up` · `anim_side`)
 ⚠️ ชุดของวาวาใช้ `idle` เฉย ๆ **ไม่ใช่ `idle_down`** แบบที่ `NPC.gd` เดิมเรียก
