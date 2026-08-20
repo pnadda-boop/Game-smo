@@ -17,6 +17,9 @@
 [ext_resource type="Script" uid="uid://fda3twa7ai7x" path="res://Game/player/smallroom/portal.gd" id="10_w0daj"]
 [ext_resource type="Script" uid="uid://b11jobx0lmegn" path="res://SpawManager.gd" id="12_t8i5n"]
 [ext_resource type="PackedScene" uid="uid://byu8d3klw3pr1" path="res://e.tscn" id="15_cidhk"]
+[ext_resource type="Script" uid="uid://c05ax1dqcqkhd" path="res://scripts/room.gd" id="16_room"]
+[ext_resource type="PackedScene" uid="uid://qdeodu7mher" path="res://decor/under_ch_1.tscn" id="17_ch1"]
+[ext_resource type="PackedScene" uid="uid://1wtwk5m82gpt" path="res://DialogueBox.tscn" id="20_oatse"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_nnral"]
 texture = ExtResource("1_y4qnq")
@@ -1170,22 +1173,31 @@ sources/1 = SubResource("TileSetAtlasSource_oy76q")
 texture = ExtResource("9_xrp6t")
 texture_region_size = Vector2i(32, 32)
 0:0/0 = 0
+0:0/0/y_sort_origin = 15
 1:0/0 = 0
+1:0/0/y_sort_origin = -15
+1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -5.333333, 16, -5.333333, 16, 16, -16, 16)
 2:0/0 = 0
 3:0/0 = 0
 4:0/0 = 0
 0:1/0 = 0
 1:1/0 = 0
+1:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
 2:1/0 = 0
 3:1/0 = 0
 4:1/0 = 0
 0:2/0 = 0
 1:2/0 = 0
+1:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
 2:2/0 = 0
+2:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
 3:2/0 = 0
+3:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
 4:2/0 = 0
+4:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
 0:3/0 = 0
 1:3/0 = 0
+1:3/0/y_sort_origin = -15
 2:3/0 = 0
 3:3/0 = 0
 4:3/0 = 0
@@ -2241,6 +2253,8 @@ size = Vector2(190.125, 63)
 
 [node name="Under" type="Node2D" unique_id=1129764217]
 y_sort_enabled = true
+script = ExtResource("16_room")
+chapter_decors = Array[PackedScene]([ExtResource("17_ch1"), null])
 
 [node name="Tile_set" type="Node2D" parent="." unique_id=1894962442]
 y_sort_enabled = true
@@ -2285,6 +2299,7 @@ tile_map_data = PackedByteArray("AADD/xIAAQAJAAQAAADE/xIAAQAKAAQAAADF/w4AAQALAAQ
 tile_set = SubResource("TileSet_f73qm")
 
 [node name="TileMapLayer4" type="TileMapLayer" parent="Tile_set" unique_id=2014082483]
+y_sort_enabled = true
 tile_map_data = PackedByteArray("AADv/wEAAAAAAAAAAADv/wIAAAAAAAEAAADw/wEAAAABAAAAAADw/wIAAAABAAEAAADx/wEAAAACAAAAAADx/wIAAAACAAEAAADy/wEAAAADAAAAAADy/wIAAAADAAEAAADz/wEAAAAEAAAAAADz/wIAAAAEAAEAAAD0/wEAAAAFAAAAAAD0/wIAAAAFAAEAAAD1/wEAAAAGAAAAAAD1/wIAAAAGAAEAAAD2/wEAAAAHAAAAAAD2/wIAAAAHAAEAAAD3/wEAAAAIAAAAAAD3/wIAAAAIAAEAAAD4/wEAAAAJAAAAAAD4/wIAAAAJAAEAAAD5/wEAAAAKAAAAAAD5/wIAAAAKAAEAAAD6/wEAAAALAAAAAAD6/wIAAAALAAEAAAD7/wEAAAAMAAAAAAD7/wIAAAAMAAEAAAD8/wEAAAANAAAAAAD8/wIAAAANAAEAAAD9/wEAAAAOAAAAAAD9/wIAAAAOAAEAAAD+/wEAAAAPAAAAAAD+/wIAAAAPAAEAAAD//wEAAAAQAAAAAAD//wIAAAAQAAEAAAAAAAEAAAARAAAAAAAAAAIAAAARAAEAAAABAAEAAAASAAAAAAABAAIAAAASAAEAAAACAAEAAAATAAAAAAACAAIAAAATAAEAAAADAAEAAAAUAAAAAAADAAIAAAAUAAEAAAAEAAEAAAAVAAAAAAAEAAIAAAAVAAEAAAAFAAEAAAAWAAAAAAAFAAIAAAAWAAEAAAAGAAEAAAAXAAAAAAAGAAIAAAAXAAEAAAAHAAEAAAAYAAAAAAAHAAIAAAAYAAEAAAAIAAEAAAAZAAAAAAAIAAIAAAAZAAEAAAAJAAEAAAAaAAAAAAAJAAIAAAAaAAEAAAAKAAEAAAAbAAAAAAAKAAIAAAAbAAEAAADv/wMAAAAAAAIAAADw/wMAAAABAAIAAADx/wMAAAACAAIAAADy/wMAAAADAAIAAADz/wMAAAAEAAIAAAD0/wMAAAAFAAIAAAD1/wMAAAAGAAIAAAD2/wMAAAAHAAIAAAD3/wMAAAAIAAIAAAD4/wMAAAAJAAIAAAD5/wMAAAAKAAIAAAD6/wMAAAALAAIAAAD7/wMAAAAMAAIAAAD8/wMAAAANAAIAAAD9/wMAAAAOAAIAAAD+/wMAAAAPAAIAAAD//wMAAAAQAAIAAAAAAAMAAAARAAIAAAABAAMAAAASAAIAAAACAAMAAAATAAIAAAADAAMAAAAUAAIAAAAEAAMAAAAVAAIAAAAFAAMAAAAWAAIAAAAGAAMAAAAXAAIAAAAHAAMAAAAYAAIAAAAIAAMAAAAZAAIAAAAJAAMAAAAaAAIAAAAKAAMAAAAbAAIAAAA=")
 tile_set = SubResource("TileSet_cidhk")
 
@@ -2398,17 +2413,22 @@ shape = SubResource("RectangleShape2D_p6w1r")
 z_index = 1
 position = Vector2(-739, 99)
 
+[node name="ChapterSlot" type="Node2D" parent="." unique_id=1428571429]
+y_sort_enabled = true
+
 [node name="player" parent="." unique_id=225684020 instance=ExtResource("3_aggwr")]
 y_sort_enabled = true
 position = Vector2(-578, 160)
 collision_mask = 16
 
 [node name="Camera2D2" type="Camera2D" parent="player" unique_id=120671617]
-zoom = Vector2(2, 2)
+zoom = Vector2(3, 3)
 limit_left = -3123
 limit_top = -37
 limit_right = 1058
 limit_bottom = 818
+
+[node name="DialogueBox" parent="." unique_id=1681219766 instance=ExtResource("20_oatse")]
 
 [connection signal="body_entered" from="StairArea2D" to="player" method="_on_stair_area_2d_body_entered"]
 [connection signal="body_exited" from="StairArea2D" to="player" method="_on_stair_area_2d_body_exited"]
