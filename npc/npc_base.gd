@@ -53,6 +53,19 @@ signal interacted(npc: NPCBase)
 @export var quest_scale: Vector2 = Vector2(0.4, 0.4)
 @export_group("")
 
+## ของสำรองเมื่อช่อง `@export` ข้างบนว่าง
+##
+## 🚨 **เอดิเตอร์เขียน `quest_texture = null` ทับลงซีนเองได้** และ
+## **`null` ในซีนชนะค่า default ของ `@export` เสมอ** → ไอคอนหายทั้งเกมโดยไม่มี error
+## เกิดจริง 2026-08-21: `npc_base.tscn` โผล่บรรทัด `quest_texture = null`
+## + `quest_scale = null` ขึ้นมาเอง (กับดักเดียวกับ `initial_facing = null` ที่เจอก่อนหน้า)
+## · ค่า default ที่ `@export` จึงไว้ใจไม่ได้ ต้องมีตัวสำรองที่ซีนเขียนทับไม่ได้
+const QUEST_TEXTURE_FALLBACK: Texture2D = preload("res://image_ui/Quest.PNG")
+const QUEST_SCALE_FALLBACK := Vector2(0.4, 0.4)
+
+## เตือนเรื่องช่องว่างครั้งเดียวต่อการรัน ไม่ใช่ทุกตัวทุกฉาก
+static var _warned_quest_null: bool = false
+
 ## ทิศที่ NPC หันตอนเปิดฉาก — ก่อนผู้เล่นเดินเข้ามาคุย
 ##
 ## | ค่า | ท่าที่เล่น | flip |
@@ -232,9 +245,9 @@ func _refresh_editor_preview() -> void:
 	indicator.position = data.indicator_offset
 	## ไอคอนเควสใช้จุดเดียวกับบับเบิล — ในเอดิเตอร์ต้องเห็นรูปด้วย ไม่งั้นจัดตำแหน่งไม่ได้
 	quest.position = data.indicator_offset
-	if quest.texture == null and quest_texture != null:
-		quest.texture = quest_texture
-	quest.scale = quest_scale
+	if quest.texture == null:
+		quest.texture = _quest_icon_texture()
+	quest.scale = _quest_icon_scale()
 
 	if sprite.sprite_frames != null and sprite.sprite_frames.has_animation(data.default_anim):
 		sprite.animation = data.default_anim
@@ -353,13 +366,40 @@ func _setup_indicator() -> void:
 
 ## เตรียมไอคอนเควส — กฎเดียวกับบับเบิล: ซีนลูกตั้งเองแล้วเคารพของมัน
 func _setup_quest() -> void:
-	if quest.texture == null and quest_texture != null:
-		quest.texture = quest_texture
-	quest.scale = quest_scale
+	if quest.texture == null:
+		quest.texture = _quest_icon_texture()
+	quest.scale = _quest_icon_scale()
 
 	## ช่อง `Visible` ของโหนดในซีน = "NPC ตัวนี้มีเควสไหม"
 	_quest_wanted = quest.visible
 	_refresh_quest_icon()
+
+
+## รูปไอคอนเควสที่จะใช้จริง — ช่องใน Inspector ว่างก็ถอยไปใช้ตัวสำรอง
+func _quest_icon_texture() -> Texture2D:
+	if quest_texture != null:
+		return quest_texture
+	_warn_quest_null()
+	return QUEST_TEXTURE_FALLBACK
+
+
+## ⚠️ เทียบกับ `Vector2.ZERO` ด้วย ไม่ใช่เช็คแค่ null — `quest_scale` เป็น Vector2
+## ซึ่ง Godot แปลง `null` ในซีนเป็น (0,0) ให้ · scale 0 = มองไม่เห็นเหมือนกัน
+## แต่จะหาสาเหตุยากกว่า เพราะโหนด `visible = true` และมีรูปครบทุกอย่าง
+func _quest_icon_scale() -> Vector2:
+	if quest_scale != Vector2.ZERO:
+		return quest_scale
+	_warn_quest_null()
+	return QUEST_SCALE_FALLBACK
+
+
+func _warn_quest_null() -> void:
+	if _warned_quest_null:
+		return
+	_warned_quest_null = true
+	push_warning("npc_base.gd: ช่อง `Quest Texture` / `Quest Scale` ในซีนเป็นค่าว่าง — ใช้ค่าสำรองแทน" \
+		+ "\n   แก้ที่ `npc/npc_base.tscn`: ลบบรรทัด `quest_texture = null` / `quest_scale = null`" \
+		+ " หรือกรอกค่าใน Inspector ให้ครบ")
 
 
 ## ไอคอนเควสควรโชว์ตอนนี้ไหม
@@ -371,8 +411,12 @@ func _setup_quest() -> void:
 ## *เริ่ม* คุยซึ่งเกิด**ก่อน**ดึงบทพูด · และถ้าพิมพ์คีย์บทผิดจนหาบทไม่เจอ
 ## `_main_dialogue_used` จะไม่ถูกตั้ง = ไอคอนเควสยังอยู่ ซึ่งถูกแล้ว
 ## เพราะผู้เล่นยังไม่ได้รับเรื่องอะไรไปจริง ๆ (ดูเหตุผลเดียวกันที่ `_get_dialogue_lines()`)
+## 🚨 **ต้องมีรูปจริงด้วย ไม่ใช่ดูแค่ธง** — ไอคอนเควสเป็นตัวกดบับเบิลไม่ให้ขึ้น
+## (ดู `show_indicator()`) ถ้ามันเองก็วาดอะไรไม่ออก จะกลายเป็น **ไม่มีไอคอนอะไรขึ้นเลย
+## ทั้งที่ `visible = true`** — บั๊กจริง 2026-08-21 ตอนซีนมี `quest_texture = null`
+## · เงื่อนไขนี้ทำให้กรณีนั้นถอยไปใช้บับเบิลตามปกติ แทนที่จะเงียบทั้งคู่
 func _should_show_quest() -> bool:
-	return _quest_wanted and not _main_dialogue_used
+	return _quest_wanted and not _main_dialogue_used and quest.texture != null
 
 
 ## จุดเดียวที่แตะ `quest.visible` — เรียกทุกครั้งที่สถานะอาจเปลี่ยน
