@@ -38,6 +38,21 @@ signal interacted(npc: NPCBase)
 @export var indicator_float_speed: float = 5.0
 @export_group("")
 
+## ไอคอนเควสลอยเหนือหัว — "ตัวนี้มีเรื่องให้ทำ"
+##
+## ใช้ **ตำแหน่งและการลอยชุดเดียวกับบับเบิล** (`data.indicator_offset` ·
+## `indicator_float_distance` · `indicator_float_speed`) เพื่อให้สองสัญญาณนี้
+## อยู่จุดเดียวกันเป๊ะ ไม่ใช่ลอยคนละที่คนละจังหวะ
+##
+## ⚠️ **เปิด/ปิดรายตัวด้วยช่อง `Visible` ของโหนด `Quest` ใน Inspector**
+## ไม่ได้ทำ `@export has_quest` แยก เพราะจะกลายเป็นสองที่ที่พูดเรื่องเดียวกัน
+## แล้วติ๊กไม่ตรงกันเมื่อไหร่จะงงว่าทำไมไอคอนไม่ขึ้น
+@export_group("ไอคอนเควส")
+@export var quest_texture: Texture2D = preload("res://image_ui/Quest.PNG")
+## 64×64 เท่าบับเบิลเป๊ะ จึงย่อเท่ากัน
+@export var quest_scale: Vector2 = Vector2(0.4, 0.4)
+@export_group("")
+
 ## ทิศที่ NPC หันตอนเปิดฉาก — ก่อนผู้เล่นเดินเข้ามาคุย
 ##
 ## | ค่า | ท่าที่เล่น | flip |
@@ -130,6 +145,15 @@ var player_in_range: bool = false
 ## นับเวลาให้บับเบิลลอยขึ้นลง (เดินเฉพาะตอนบับเบิลโผล่)
 var _indicator_time: float = 0.0
 
+## นับเวลาให้ไอคอนเควสลอย — แยกตัวจากบับเบิลเพราะ `_indicator_time` ถูกรีเซ็ตเป็น 0
+## ทุกครั้งที่บับเบิลป่องออกมา (ตั้งใจ — จะได้เริ่มจากจุดกลางพอดี)
+## ใช้ตัวเดียวกันเมื่อไหร่ ไอคอนเควสจะกระตุกกลับทุกครั้งที่ผู้เล่นเดินเข้าระยะ
+var _quest_time: float = 0.0
+
+## ซีนตั้งให้ไอคอนเควสโชว์ไหม — จำไว้ตอน `_ready` เพราะระหว่างเล่นเราซ่อนมันชั่วคราว
+## ตอนบับเบิลขึ้น แล้วต้องรู้ว่าจะคืนสถานะเป็นอะไร
+var _quest_wanted: bool = false
+
 ## ตัวผู้เล่นที่เดินเข้ามา
 ##
 ## ⚠️ เก็บจาก `body_entered` ไม่ใช่ `get_first_node_in_group("player")` ตอน _ready
@@ -146,6 +170,7 @@ var _initial_flip: bool = false
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var interact_area: Area2D = $InteractArea
 @onready var indicator: AnimatedSprite2D = $Indicator
+@onready var quest: Sprite2D = $Quest
 
 
 func _ready() -> void:
@@ -162,11 +187,12 @@ func _ready() -> void:
 	## ซ่อนไว้ก่อนเสมอ ค่อยโผล่ตอนผู้เล่นเข้าระยะ
 	indicator.visible = false
 	_setup_indicator()
+	_setup_quest()
 
-	## ⚠️ _process ทำงานเฉพาะตอนบับเบิลลอยอยู่
+	## ⚠️ _process ทำงานเฉพาะตอนมีอะไรลอยอยู่จริง
 	## แมพหนึ่งมี NPC หลายตัว ปล่อยให้ทุกตัวเข้า _process ทุกเฟรมเพื่อ return ทิ้ง
 	## คือจ่ายฟรีเปล่า ๆ — เปิดเอาตอนใช้จริงดีกว่า
-	set_process(false)
+	_update_float_process()
 
 	## ต่อสัญญาณจากโค้ด ไม่ต่อจาก editor
 	##
@@ -204,6 +230,11 @@ func _refresh_editor_preview() -> void:
 		sprite.sprite_frames = data.frames
 	sprite.position = data.sprite_offset
 	indicator.position = data.indicator_offset
+	## ไอคอนเควสใช้จุดเดียวกับบับเบิล — ในเอดิเตอร์ต้องเห็นรูปด้วย ไม่งั้นจัดตำแหน่งไม่ได้
+	quest.position = data.indicator_offset
+	if quest.texture == null and quest_texture != null:
+		quest.texture = quest_texture
+	quest.scale = quest_scale
 
 	if sprite.sprite_frames != null and sprite.sprite_frames.has_animation(data.default_anim):
 		sprite.animation = data.default_anim
@@ -227,6 +258,8 @@ func _apply_data() -> void:
 
 	sprite.position = data.sprite_offset
 	indicator.position = data.indicator_offset
+	## ตำแหน่งเดียวกับบับเบิลเป๊ะ — ปรับที่ `indicator_offset` ใน `.tres` ที่เดียว ขยับทั้งคู่
+	quest.position = data.indicator_offset
 
 	_play_default_anim()
 	_apply_initial_facing()
@@ -318,6 +351,25 @@ func _setup_indicator() -> void:
 	indicator.scale = indicator_scale
 
 
+## เตรียมไอคอนเควส — กฎเดียวกับบับเบิล: ซีนลูกตั้งเองแล้วเคารพของมัน
+func _setup_quest() -> void:
+	if quest.texture == null and quest_texture != null:
+		quest.texture = quest_texture
+	quest.scale = quest_scale
+
+	## ช่อง `Visible` ของโหนดในซีน = "NPC ตัวนี้มีเควสไหม"
+	_quest_wanted = quest.visible
+
+
+## เปิด `_process` เฉพาะตอนมีอะไรลอยอยู่จริง
+##
+## 🚨 **ต้องดูทั้งสองตัว** — เดิม `hide_indicator()` สั่ง `set_process(false)` ทื่อ ๆ
+## พอมีไอคอนเควสเข้ามา การเดินออกนอกระยะจะไปหยุดการลอยของไอคอนเควสด้วย
+## แล้วมันจะค้างนิ่งอยู่กลางอากาศตลอดฉาก
+func _update_float_process() -> void:
+	set_process(indicator.visible or quest.visible)
+
+
 ## เข้าระยะคุย
 func _on_interact_area_body_entered(body: Node2D) -> void:
 	if not body.is_in_group("player"):
@@ -388,11 +440,16 @@ func _play_if_exists(anim: String) -> void:
 
 ## บับเบิลป่องออกมา + เริ่มลอย
 func show_indicator() -> void:
+	## 🚨 **ไอคอนเควสหลบให้บับเบิล** — สองอันนี้อยู่ตำแหน่งเดียวกันเป๊ะตามที่ออกแบบไว้
+	## โชว์พร้อมกันจะทับกันเป็นก้อนเดียวอ่านไม่ออก · บับเบิลชนะเพราะเป็นสัญญาณของ
+	## "กดได้เดี๋ยวนี้" ส่วนไอคอนเควสเป็นสัญญาณของ "ตัวนี้มีเรื่องให้ทำ" ซึ่งรอได้
+	quest.visible = false
+
 	indicator.visible = true
 	indicator.modulate.a = 0.0
 	indicator.scale = Vector2.ZERO
 	_indicator_time = 0.0
-	set_process(true)
+	_update_float_process()
 
 	if indicator.sprite_frames != null and indicator.sprite_frames.has_animation(indicator_anim):
 		indicator.play(indicator_anim)
@@ -409,13 +466,24 @@ func hide_indicator() -> void:
 	indicator.visible = false
 	indicator.frame = 0
 	indicator.offset.y = 0.0
-	set_process(false)
+
+	## คืนไอคอนเควสตามที่ซีนตั้งไว้ ไม่ใช่เปิดทื่อ ๆ — NPC ที่ไม่มีเควสจะได้ไม่มีไอคอนงอก
+	quest.visible = _quest_wanted
+	_update_float_process()
 
 
-## ลอยขึ้นลงเบา ๆ — เปิดเฉพาะตอนบับเบิลโผล่ (ดู set_process ใน _ready)
+## ลอยขึ้นลงเบา ๆ — เปิดเฉพาะตอนมีอะไรลอยอยู่ (ดู `_update_float_process()`)
+##
+## ⚠️ ขยับ `offset` ไม่ใช่ `position` — `position` คือจุดที่ `data.indicator_offset` ตั้งไว้
+## เขียนทับเมื่อไหร่ ตำแหน่งที่ตั้งใน `.tres` จะหายไปตั้งแต่เฟรมแรกที่ลอย
 func _process(delta: float) -> void:
-	_indicator_time += delta * indicator_float_speed
-	indicator.offset.y = sin(_indicator_time) * indicator_float_distance
+	if indicator.visible:
+		_indicator_time += delta * indicator_float_speed
+		indicator.offset.y = sin(_indicator_time) * indicator_float_distance
+
+	if quest.visible:
+		_quest_time += delta * indicator_float_speed
+		quest.offset.y = sin(_quest_time) * indicator_float_distance
 
 
 ## คุยกับ NPC ตัวนี้ได้ไหม (มีข้อมูล + ไม่ได้ปิดไว้ + ยังไม่หมดสิทธิ์คุย)
