@@ -51,6 +51,18 @@ signal interacted(npc: NPCBase)
 @export var quest_texture: Texture2D = preload("res://image_ui/Quest.PNG")
 ## 64×64 เท่าบับเบิลเป๊ะ จึงย่อเท่ากัน
 @export var quest_scale: Vector2 = Vector2(0.4, 0.4)
+## ชื่อธง**บูล**ใน `GameState` ที่ต้องเป็นจริง ไอคอนเควสถึงจะขึ้น (ว่าง = ไม่มีเงื่อนไข)
+##
+## รูปแบบเดียวกับคีย์ `"if"` ของตัวเลือกในบทสนทนา — ชี้ชื่อตัวแปรตรง ๆ ไม่ต้องเขียนโค้ดเพิ่ม
+## ตัวอย่างจริง: โชแชงตั้ง `box_delivered` → ขึ้นบับเบิลไปก่อน
+## พอน้ำฟ้าวางกล่องเสร็จถึงสลับเป็นไอคอนเควส
+##
+## 🚨 **ตั้งช่องนี้แล้ว "ยังไม่เคยคุยบทหลัก" จะไม่ถูกใช้เป็นเงื่อนไขอีก** — ธงตัวนี้แทนที่มัน
+## สองแบบนี้เป็นคนละเรื่อง: วาวา = *"มีเรื่องมาฝาก จนกว่าจะรับไป"* ·
+## โชแชง = *"มีเรื่องให้ทำ ตั้งแต่จังหวะที่เนื้อเรื่องกำหนด"*
+## เอามา AND กันไม่ได้ เพราะผู้เล่นคุยกับโชไปแล้วตั้งแต่ก่อนวางกล่อง
+## (บท `Cho_intro` มีตัวเลือกถามเรื่องกล่องอยู่) ไอคอนจะไม่มีวันขึ้นเลย
+@export var quest_if: String = ""
 @export_group("")
 
 ## ของสำรองเมื่อช่อง `@export` ข้างบนว่าง
@@ -65,6 +77,9 @@ const QUEST_SCALE_FALLBACK := Vector2(0.4, 0.4)
 
 ## เตือนเรื่องช่องว่างครั้งเดียวต่อการรัน ไม่ใช่ทุกตัวทุกฉาก
 static var _warned_quest_null: bool = false
+
+## เตือนเรื่องชื่อธงผิดครั้งเดียวต่อโหนด (ต่อโหนด ไม่ใช่ static — คนละตัวอาจพิมพ์ผิดคนละชื่อ)
+var _warned_quest_flag: bool = false
 
 ## ทิศที่ NPC หันตอนเปิดฉาก — ก่อนผู้เล่นเดินเข้ามาคุย
 ##
@@ -372,7 +387,50 @@ func _setup_quest() -> void:
 
 	## ช่อง `Visible` ของโหนดในซีน = "NPC ตัวนี้มีเควสไหม"
 	_quest_wanted = quest.visible
+
+	## 🚨 **ต้องฟังสัญญาณ ไม่ใช่อ่านค่าตอน `_ready()` ครั้งเดียว**
+	## โชแชงอยู่ในซีนเดียวกับจุดวางกล่อง (`all_level_2`) ผู้เล่นวางกล่องเสร็จ
+	## โดยไม่มีการโหลดฉากใหม่เลย — อ่านครั้งเดียวจะต้องเดินออกจากฉากแล้วกลับเข้ามา
+	## ไอคอนถึงจะสลับ ซึ่งดูเหมือนระบบไม่ทำงาน
+	##
+	## ⚠️ **ต่อทุกตัวไม่ว่าจะตั้ง `quest_if` ไว้หรือไม่** — เคยเขียนเป็น
+	## `if not quest_if.is_empty()` เพื่อประหยัด แต่นั่นคือการผูกการต่อสัญญาณไว้กับค่า
+	## ที่อ่านครั้งเดียวตอน `_ready()` · ใครตั้ง `quest_if` จากโค้ดทีหลังจะไม่มีวันได้รับสัญญาณ
+	## แล้วหาสาเหตุไม่เจอเพราะค่าในตัวแปรถูกต้องทุกอย่าง
+	## · ธงขยับไม่กี่ครั้งตลอดเกม ตัวที่ไม่เกี่ยวก็แค่เทียบสตริงแล้วออก — ถูกกว่าบั๊กแบบนั้นมาก
+	## (Godot ตัดการเชื่อมต่อให้เองตอนโหนดถูกลบ ไม่ต้อง disconnect ตอนเปลี่ยนฉาก)
+	GameState.flag_changed.connect(_on_state_flag_changed)
+
 	_refresh_quest_icon()
+
+
+## ธงใน `GameState` ขยับ — สลับไอคอนบนหัวทันทีถ้าเป็นธงที่เราสนใจ
+func _on_state_flag_changed(flag_name: String) -> void:
+	var flag: String = quest_if.strip_edges()
+	if flag.is_empty() or flag_name != flag:
+		return
+	_refresh_head_icon()
+
+
+## ตัดสินใหม่ว่าตอนนี้บนหัวควรมีอะไร — ใช้ตอนสถานะเปลี่ยนกลางคัน
+##
+## 🚨 **ต่างจาก `_refresh_quest_icon()` ตรงที่ตัวนี้แตะบับเบิลด้วย**
+## เควสมาถึงตอนผู้เล่นยืนอยู่ข้าง ๆ พอดี (ซึ่งเป็นกรณีปกติของโชแชง — วางกล่องเสร็จ
+## แล้วเดินมาหาเขา) ถ้าเปลี่ยนแค่ไอคอนเควส บับเบิลที่ค้างอยู่จะทับกันสองอัน
+func _refresh_head_icon() -> void:
+	if _should_show_quest():
+		indicator.stop()
+		indicator.visible = false
+		indicator.frame = 0
+		indicator.offset.y = 0.0
+		_refresh_quest_icon()
+		return
+
+	_refresh_quest_icon()
+
+	## เควสหมดไปแล้วแต่ยังยืนอยู่ในระยะ — เอาบับเบิลกลับมา ไม่งั้นหัวโล่งจนกว่าจะเดินออกแล้วเข้าใหม่
+	if player_in_range and can_interact() and not indicator.visible:
+		show_indicator()
 
 
 ## รูปไอคอนเควสที่จะใช้จริง — ช่องใน Inspector ว่างก็ถอยไปใช้ตัวสำรอง
@@ -416,7 +474,31 @@ func _warn_quest_null() -> void:
 ## ทั้งที่ `visible = true`** — บั๊กจริง 2026-08-21 ตอนซีนมี `quest_texture = null`
 ## · เงื่อนไขนี้ทำให้กรณีนั้นถอยไปใช้บับเบิลตามปกติ แทนที่จะเงียบทั้งคู่
 func _should_show_quest() -> bool:
-	return _quest_wanted and not _main_dialogue_used and quest.texture != null
+	if not _quest_wanted or quest.texture == null:
+		return false
+
+	## ตั้งธงไว้ → ธงเป็นตัวตัดสินแทน "ยังไม่เคยคุย" (ดูเหตุผลที่ `quest_if`)
+	var flag: String = quest_if.strip_edges()
+	if not flag.is_empty():
+		return _read_state_flag(flag)
+
+	return not _main_dialogue_used
+
+
+## อ่านธงบูลจาก `GameState` ตามชื่อ
+##
+## ⚠️ **พิมพ์ชื่อธงผิด → `push_error` ไม่ใช่เงียบ ๆ ถือว่าเป็นเท็จ**
+## ไม่งั้นไอคอนจะไม่มีวันขึ้นเลยโดยไม่มีอะไรบอก ซึ่งดูเหมือน "ตั้งไว้แล้วแต่ระบบพัง"
+## (กฎเดียวกับตัวเลือก `"if"` / `"unless"` ใน `dialogue_system.gd`)
+## · เตือนครั้งเดียวต่อโหนด ไม่ใช่ทุกครั้งที่รีเฟรช — ตัวนี้ถูกเรียกทุกครั้งที่เดินเข้าออกระยะ
+func _read_state_flag(flag: String) -> bool:
+	if not flag in GameState:
+		if not _warned_quest_flag:
+			_warned_quest_flag = true
+			push_error("npc_base.gd: `%s` ตั้ง `Quest If` = '%s' แต่ไม่มีตัวแปรชื่อนี้ใน GameState" \
+				% [name, flag])
+		return false
+	return bool(GameState.get(flag))
 
 
 ## จุดเดียวที่แตะ `quest.visible` — เรียกทุกครั้งที่สถานะอาจเปลี่ยน
