@@ -32,8 +32,8 @@ signal slot_selected(index: int)
 @export var bread_slot: int = 1
 
 @export_group("กรอบตอนเลือก")
-## สีกรอบของช่องที่ผู้เล่นเลือกอยู่
-@export var selected_border_color: Color = Color("fbebe3")
+## สีกรอบของช่องที่ผู้เล่นเลือกอยู่ — เหลือง (เดิมเป็นครีม `fbebe3` ซึ่งใกล้สีพาแนลเกินไป)
+@export var selected_border_color: Color = Color("e9de00")
 @export var selected_border_width: int = 4
 @export_group("")
 
