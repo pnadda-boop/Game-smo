@@ -12,17 +12,31 @@ extends CanvasLayer
 # กำหนดว่าแต่ละชั้น เมื่อกด select index ไหน จะไป scene ไหน
 # select 0 = ตัวเลือกบน (ลูกศรเริ่มต้น), select 1 = ตัวเลือกล่าง
 # ต้องแก้ path ให้ตรงกับไฟล์ scene จริงในโปรเจกต์
+
+## ชั้น 2 ชี้ `AllLevel2` ไม่ใช่ `level_2.tscn` โดยตรง
+##
+## `AllLevel2` เป็นซีนห่อที่มี `Level2` เป็นลูก — เอาไว้เอาของที่เพิ่มทีหลัง
+## (เควสต์กล่อง `level_2_1.tscn` · NPC) มาต่อเป็นพี่น้องกัน โดยไม่ต้องแก้ในซีนแมพ
+## ที่ยาวสองพันกว่าบรรทัด · `spawn` ยังใช้ชื่อเดิมได้ เพราะ `level_base.gd`
+## หา spawn point ด้วย `find_child()` ในกิ่งของ `Level2` เอง ซ้อนอีกชั้นไม่กระทบ
+##
+## 🚨 **ย้าย/เปลี่ยนชื่อไฟล์นี้เมื่อไหร่ ต้องกลับมาแก้บรรทัดล่างนี้ด้วยมือ**
+## Godot อัปเดตให้เฉพาะการอ้างอิงในซีนกับ `@export` เท่านั้น **string ใน `.gd` มันไม่ตามให้**
+## (กับดักเดิมที่เคยเจอตอนเปลี่ยนชื่อ `canvas_layer.tscn` → `DialogueBox.tscn`)
+## แยกเป็น const เพราะมี 2 ที่ที่ชี้ชั้น 2 — แก้ที่เดียวไม่มีทางตกหล่นข้างใดข้างหนึ่ง
+const LEVEL_2_SCENE := "res://all_level_2.tscn"
+
 var floor_targets := {
 	"1floor": [
 		{"scene": "res://level_3.tscn", "spawn": "from_1floor_direct"},
-		{"scene": "res://level_2.tscn", "spawn": "from_1floor"}
+		{"scene": LEVEL_2_SCENE, "spawn": "from_1floor"}
 	],
 	"2floor": [
 		{"scene": "res://level_3.tscn", "spawn": "from_2floor_up"},
 		{"scene": "res://level1.tscn", "spawn": "from_2floor_down"}
 	],
 	"3floor": [
-		{"scene": "res://level_2.tscn", "spawn": "from_3floor"},
+		{"scene": LEVEL_2_SCENE, "spawn": "from_3floor"},
 		{"scene": "res://level1.tscn", "spawn": "from_3floor_direct"}
 	]
 }

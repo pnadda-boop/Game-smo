@@ -1399,6 +1399,15 @@ sources/1 = SubResource("TileSetAtlasSource_m4350")
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wopv1"]
 size = Vector2(193, 95)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_m4350"]
+size = Vector2(2201, 126)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_eb4mi"]
+size = Vector2(139, 1198)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_x3gid"]
+size = Vector2(139, 1198)
+
 [node name="P" type="Node2D" unique_id=1176672544]
 y_sort_enabled = true
 script = ExtResource("1_m4350")
@@ -1500,7 +1509,7 @@ collision_layer = 17
 collision_mask = 17
 
 [node name="Camera2D" type="Camera2D" parent="player" unique_id=512755028]
-zoom = Vector2(2, 2)
+zoom = Vector2(3, 3)
 limit_left = 18
 limit_top = 623
 limit_right = 1488
@@ -1515,6 +1524,20 @@ spawn_root = NodePath("spaw")
 
 [node name="from_under_1" type="Marker2D" parent="SpawManager/spaw" unique_id=332739824]
 position = Vector2(737, 1728)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=690468659]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=945916564]
+position = Vector2(1077.5, 664)
+shape = SubResource("RectangleShape2D_m4350")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D" unique_id=731023879]
+position = Vector2(46.5, 1200)
+shape = SubResource("RectangleShape2D_eb4mi")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="StaticBody2D" unique_id=1380717048]
+position = Vector2(1554, 1200)
+shape = SubResource("RectangleShape2D_x3gid")
 
 [connection signal="body_entered" from="Area2D" to="Area2D" method="_on_body_entered"]
 [connection signal="body_exited" from="Area2D" to="Area2D" method="_on_body_exited"]

@@ -618,7 +618,7 @@ position = Vector2(309, 449)
 collision_mask = 17
 
 [node name="Camera2D" type="Camera2D" parent="SpawManager/player" unique_id=1893843576]
-zoom = Vector2(2, 2)
+zoom = Vector2(3, 3)
 limit_enabled = false
 limit_left = 0
 position_smoothing_enabled = true
