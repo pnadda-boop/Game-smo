@@ -25,6 +25,12 @@ var is_talking := false
 var tween: Tween
 var current_npc = null
 
+## id ของ HUD ช่องของในทะเบียน `UI_SCENES` ของ `scripts/ui_root.gd`
+const HUD_UI_ID := "hud"
+
+## เราเป็นคนซ่อน HUD ไว้เองไหม — ตัวตัดสินว่าจบบทแล้วต้องเอากลับมาไหม
+var _hud_hidden_by_dialogue := false
+
 @export var typing_speed: float = 0.05
 
 ## เสียงพิมพ์ระหว่างตัวอักษรทยอยขึ้น
@@ -569,7 +575,41 @@ func start_dialogue(lines: Array, npc = null, show_portraits: bool = true):
 		_apply_portrait_cast(lines)
 
 	_set_player_can_move(false)
+	_hide_hud_for_dialogue()
 	show_line()
+
+
+## ==============================================
+## HUD ช่องของ — หลบให้กล่องคำพูดระหว่างคุย แล้วกลับมาตอนบทจบ
+## ==============================================
+## HUD นั่งอยู่ที่ y 950–1030 ส่วนกล่องข้อความกิน 780–1047 — ทับกันพอดีกลางกล่อง
+##
+## ⚠️ **ซ่อน ไม่ใช่ลบ** — `UIRoot.hide_ui()` เก็บโหนดไว้ครบทั้งของในช่องและช่องที่เลือกอยู่
+## (ดูเหตุผลที่ `ui_root.gd`: HUD ที่ถูกลบแล้วสร้างใหม่จะลืมว่าผู้เล่นเลือกช่องไหน)
+func _hide_hud_for_dialogue() -> void:
+	var hud: CanvasLayer = UIRoot.get_ui(HUD_UI_ID)
+	## จำว่า "เราเป็นคนซ่อน" ไม่ใช่แค่ "ตอนนี้ซ่อนอยู่" — จบบทแล้วจะได้ไม่ไปเปิด HUD
+	## ที่คนอื่นตั้งใจซ่อนไว้ (หรือที่ยังไม่เคยมีตัวตน)
+	_hud_hidden_by_dialogue = hud != null and hud.visible
+	if _hud_hidden_by_dialogue:
+		UIRoot.hide_ui(HUD_UI_ID)
+
+
+## 🚨 **ห้ามเรียก `UIRoot.show_ui()` ทื่อ ๆ ตอนจบบท** — ตัวนั้น **สร้าง UI ให้ถ้ายังไม่มี**
+## คุยกับ NPC ตั้งแต่ก่อนหยิบของชิ้นแรกแล้วจบบท จะได้ช่องของโผล่มาเองทั้งที่ผู้เล่น
+## ยังไม่มีของสักชิ้น — ซึ่งขัดกับกฎที่ `ui_root.gd` เขียนไว้ว่าไม่มี UI ตัวไหนเปิดเองตั้งแต่เกมเริ่ม
+func _restore_hud_after_dialogue() -> void:
+	if not _hud_hidden_by_dialogue:
+		return
+	_hud_hidden_by_dialogue = false
+	UIRoot.show_ui(HUD_UI_ID)
+
+
+## 🚨 **กล่องคำพูดตายพร้อมฉาก แต่ HUD แขวนอยู่ที่ `root` ซึ่งข้ามฉาก**
+## เปลี่ยนฉากระหว่างที่บทยังค้างอยู่ = ไม่มีใครเหลือให้เอา HUD กลับมา **ช่องของจะหายตลอดกาล**
+## (และผู้เล่นจะเห็นเป็น "ของหาย" ทั้งที่ `GameState` ยังถืออยู่ครบ)
+func _exit_tree() -> void:
+	_restore_hud_after_dialogue()
 
 
 ## เลือกว่าจะเอารูปใครขึ้นจอบ้างในบทสนทนาชุดนี้
@@ -627,6 +667,7 @@ func end_dialogue():
 	is_talking = false
 	visible = false
 	_set_player_can_move(true)
+	_restore_hud_after_dialogue()
 	dialogue_queue.clear()
 	index = 0
 	# จบบทสนทนาแล้วล้างอารมณ์ทิ้ง บทถัดไปเริ่มจากศูนย์
