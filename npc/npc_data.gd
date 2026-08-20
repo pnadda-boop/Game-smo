@@ -21,6 +21,20 @@ extends Resource
 ## ปล่อย null ได้ = ใช้ของที่ตั้งไว้ในซีนแทน (ดู `_apply_data()` ใน npc_base.gd)
 @export var frames: SpriteFrames = null
 
+## อนิเมชันที่เล่นตอนยืนเฉย ๆ
+##
+## ⚠️ ชุดของวาวาใช้ชื่อ `idle` เฉย ๆ **ไม่ใช่ `idle_down`** แบบที่ `NPC.gd` เดิมเรียก
+## ตั้งได้รายตัวเพราะแต่ละคนอาจตั้งชื่อชุดคนละแบบ
+## ชื่อไม่ตรงจะขึ้น warning บอกว่ามีชุดไหนให้เลือกบ้าง แล้วเล่นชุดแรกแทน (ไม่ crash)
+@export var default_anim: String = "idle"
+
+## ชุดที่ใช้ตอน `face_player()` หันไปหาผู้เล่น
+##
+## ทางซ้ายขวาใช้ชุดเดียวกันแล้ว flip เอา ส่วนหันลงใช้ `default_anim` ข้างบน
+## ชื่อไม่ตรงจะไม่เปลี่ยนท่า (ยืนหน้าเดิม) แทนที่จะพังหรือหายไป
+@export var anim_up: String = "idle_up"
+@export var anim_side: String = "idle_side"
+
 ## เลื่อนสไปรท์เทียบกับจุดกึ่งกลางตัว
 ## ตัวละครสูงต่ำไม่เท่ากัน เท้าจะได้อยู่ระดับเดียวกับ collision
 @export var sprite_offset: Vector2 = Vector2.ZERO

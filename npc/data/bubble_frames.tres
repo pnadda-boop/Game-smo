@@ -1,0 +1,39 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://c8kah4yygtm14"]
+
+[ext_resource type="Texture2D" uid="uid://hrpxhoevbmen" path="res://image/Talk.png" id="1_talk"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bubble0"]
+atlas = ExtResource("1_talk")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bubble1"]
+atlas = ExtResource("1_talk")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bubble2"]
+atlas = ExtResource("1_talk")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bubble3"]
+atlas = ExtResource("1_talk")
+region = Rect2(192, 0, 64, 64)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bubble0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bubble1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bubble2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bubble3")
+}],
+"loop": true,
+"name": &"Bubble",
+"speed": 3.0
+}]
