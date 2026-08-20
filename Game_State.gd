@@ -73,6 +73,17 @@ var box_delivered: bool = false:
 		box_delivered = value
 		flag_changed.emit("box_delivered")
 
+## รับขนมปังเบรคเช้าจากพี่โชแล้วหรือยัง
+##
+## ปิดเควส "ไปเอาเบรค" ที่เปิดโดย `box_delivered` — โชแชงตั้ง `quest_unless` เป็นตัวนี้
+## → ไอคอนเควสหายและบทกลับไปเป็น `Cho_idle` พร้อมกันในจังหวะเดียว
+var has_bread: bool = false:
+	set(value):
+		if value == has_bread:
+			return
+		has_bread = value
+		flag_changed.emit("has_bread")
+
 ## ==============================================
 ## บทของเนื้อเรื่องตอนนี้ (1 = บทแรก)
 ## ==============================================

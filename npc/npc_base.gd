@@ -51,18 +51,6 @@ signal interacted(npc: NPCBase)
 @export var quest_texture: Texture2D = preload("res://image_ui/Quest.PNG")
 ## 64×64 เท่าบับเบิลเป๊ะ จึงย่อเท่ากัน
 @export var quest_scale: Vector2 = Vector2(0.4, 0.4)
-## ชื่อธง**บูล**ใน `GameState` ที่ต้องเป็นจริง ไอคอนเควสถึงจะขึ้น (ว่าง = ไม่มีเงื่อนไข)
-##
-## รูปแบบเดียวกับคีย์ `"if"` ของตัวเลือกในบทสนทนา — ชี้ชื่อตัวแปรตรง ๆ ไม่ต้องเขียนโค้ดเพิ่ม
-## ตัวอย่างจริง: โชแชงตั้ง `box_delivered` → ขึ้นบับเบิลไปก่อน
-## พอน้ำฟ้าวางกล่องเสร็จถึงสลับเป็นไอคอนเควส
-##
-## 🚨 **ตั้งช่องนี้แล้ว "ยังไม่เคยคุยบทหลัก" จะไม่ถูกใช้เป็นเงื่อนไขอีก** — ธงตัวนี้แทนที่มัน
-## สองแบบนี้เป็นคนละเรื่อง: วาวา = *"มีเรื่องมาฝาก จนกว่าจะรับไป"* ·
-## โชแชง = *"มีเรื่องให้ทำ ตั้งแต่จังหวะที่เนื้อเรื่องกำหนด"*
-## เอามา AND กันไม่ได้ เพราะผู้เล่นคุยกับโชไปแล้วตั้งแต่ก่อนวางกล่อง
-## (บท `Cho_intro` มีตัวเลือกถามเรื่องกล่องอยู่) ไอคอนจะไม่มีวันขึ้นเลย
-@export var quest_if: String = ""
 @export_group("")
 
 ## ของสำรองเมื่อช่อง `@export` ข้างบนว่าง
@@ -406,8 +394,9 @@ func _setup_quest() -> void:
 
 ## ธงใน `GameState` ขยับ — สลับไอคอนบนหัวทันทีถ้าเป็นธงที่เราสนใจ
 func _on_state_flag_changed(flag_name: String) -> void:
-	var flag: String = quest_if.strip_edges()
-	if flag.is_empty() or flag_name != flag:
+	if data == null:
+		return
+	if flag_name != data.quest_if.strip_edges() and flag_name != data.quest_unless.strip_edges():
 		return
 	_refresh_head_icon()
 
@@ -429,8 +418,21 @@ func _refresh_head_icon() -> void:
 	_refresh_quest_icon()
 
 	## เควสหมดไปแล้วแต่ยังยืนอยู่ในระยะ — เอาบับเบิลกลับมา ไม่งั้นหัวโล่งจนกว่าจะเดินออกแล้วเข้าใหม่
-	if player_in_range and can_interact() and not indicator.visible:
+	##
+	## 🚨 **ห้ามเด้งบับเบิลขึ้นระหว่างบทยังเปิดอยู่** — ธงปิดเควสถูกตั้ง**กลางบท**
+	## (`{"set": "has_bread"}` ในบท `Cho_break`) ไม่กันไว้ = บับเบิลป่องขึ้นมาทับ
+	## กล่องคำพูดตอนโชกำลังพูดอยู่ · `reset_direction()` เอาบับเบิลกลับมาให้ตอนบทจบอยู่แล้ว
+	##
+	## ⚠️ อ่านสถานะสดจากกล่องคำพูด ไม่เก็บธง `_in_dialogue` ของตัวเอง
+	## (เหตุผลเดียวกับที่ `interact()` ไม่ใช้ธง — บทมีทางออกก่อนเปิดได้หลายทาง)
+	if player_in_range and can_interact() and not indicator.visible and not _is_dialogue_open():
 		show_indicator()
+
+
+## กล่องคำพูดเปิดอยู่ไหมตอนนี้
+func _is_dialogue_open() -> bool:
+	var ui: Node = get_tree().get_first_node_in_group("dialogue_ui")
+	return ui != null and "is_talking" in ui and ui.is_talking
 
 
 ## รูปไอคอนเควสที่จะใช้จริง — ช่องใน Inspector ว่างก็ถอยไปใช้ตัวสำรอง
@@ -477,12 +479,43 @@ func _should_show_quest() -> bool:
 	if not _quest_wanted or quest.texture == null:
 		return false
 
-	## ตั้งธงไว้ → ธงเป็นตัวตัดสินแทน "ยังไม่เคยคุย" (ดูเหตุผลที่ `quest_if`)
-	var flag: String = quest_if.strip_edges()
-	if not flag.is_empty():
-		return _read_state_flag(flag)
+	## ตั้งเงื่อนไขเควสไว้ใน `.tres` → เงื่อนไขนั้นตัดสินแทน "ยังไม่เคยคุย"
+	##
+	## 🚨 **แทนที่ ไม่ใช่ AND กัน** — สองแบบนี้คนละเรื่อง:
+	## วาวา = *"มีเรื่องมาฝาก จนกว่าจะรับไป"* · โชแชง = *"มีเรื่องให้ทำ ตั้งแต่จังหวะ
+	## ที่เนื้อเรื่องกำหนด"* · ผู้เล่นคุยกับโชไปแล้วตั้งแต่ก่อนวางกล่อง (บท `Cho_intro`
+	## มีตัวเลือกถามเรื่องกล่องอยู่ด้วยซ้ำ) AND กันเมื่อไหร่ ไอคอนของโชจะไม่มีวันขึ้นเลย
+	if _has_quest_condition():
+		return _in_quest_state()
 
 	return not _main_dialogue_used
+
+
+## ตัวละครตัวนี้มีระบบเควสไหม (ตั้งช่องใดช่องหนึ่งใน `.tres` ไว้)
+func _has_quest_condition() -> bool:
+	if data == null:
+		return false
+	return not data.quest_if.strip_edges().is_empty() \
+		or not data.quest_unless.strip_edges().is_empty()
+
+
+## ตอนนี้อยู่ในช่วงที่มีเควสค้างอยู่ไหม
+##
+## ⚠️ ช่องที่ปล่อยว่างถือว่า "ผ่าน" — ตั้งแค่ `quest_if` ก็ได้เควสที่เปิดแล้วเปิดค้าง
+## ตั้งแค่ `quest_unless` ก็ได้เควสที่มีมาตั้งแต่ต้นแล้วปิดทีหลัง
+func _in_quest_state() -> bool:
+	if data == null:
+		return false
+
+	var need_true: String = data.quest_if.strip_edges()
+	if not need_true.is_empty() and not _read_state_flag(need_true):
+		return false
+
+	var need_false: String = data.quest_unless.strip_edges()
+	if not need_false.is_empty() and _read_state_flag(need_false):
+		return false
+
+	return true
 
 
 ## อ่านธงบูลจาก `GameState` ตามชื่อ
@@ -495,7 +528,7 @@ func _read_state_flag(flag: String) -> bool:
 	if not flag in GameState:
 		if not _warned_quest_flag:
 			_warned_quest_flag = true
-			push_error("npc_base.gd: `%s` ตั้ง `Quest If` = '%s' แต่ไม่มีตัวแปรชื่อนี้ใน GameState" \
+			push_error("npc_base.gd: `%s` ชี้ธง '%s' แต่ไม่มีตัวแปรชื่อนี้ใน GameState" \
 				% [name, flag])
 		return false
 	return bool(GameState.get(flag))
@@ -752,6 +785,15 @@ func _get_dialogue_lines() -> Array:
 ## | `dialogue_id_override` | ตั้งทับที่ตัวโหนด (บทเฉพาะฉาก) |
 ## | `data.dialogue_id` | คีย์กลางจาก `.tres` |
 func _resolve_dialogue_key() -> String:
+	## 🚨 **บทเควสมาก่อนทุกอย่าง รวมถึง `dialogue_id_after`**
+	## โชแชงตั้ง `dialogue_id_after = "Cho_idle"` ไว้ และผู้เล่นคุยกับเขาไปแล้ว
+	## ตั้งแต่ก่อนวางกล่อง — ไม่มาก่อน `_main_dialogue_used` เมื่อไหร่
+	## บทเบรคจะไม่มีวันถูกเล่น ได้ "อยากให้ช่วยอะไรไหม?" ทั้งที่ไอคอนเควสขึ้นอยู่บนหัว
+	if data != null and _in_quest_state():
+		var quest_key: String = _clean_key(data.quest_dialogue_id, "Quest Dialogue Id (ใน .tres)")
+		if not quest_key.is_empty():
+			return quest_key
+
 	if _main_dialogue_used:
 		var after: String = _clean_key(dialogue_id_after, "Dialogue Id After")
 		if not after.is_empty():

@@ -23,6 +23,14 @@ signal slot_selected(index: int)
 ## กล่องไปอยู่ช่องไหน (0 = พาแนลแรก)
 @export var box_slot: int = 0
 
+## ขนมปังเบรคเช้าที่พี่โชให้ (บท `Cho_break`)
+@export var bread_icon: Texture2D = preload("res://item/Bread.PNG")
+
+## ⚠️ **คนละช่องกับกล่อง** — ช่วงที่ทั้งสองอย่างอยู่ในมือพร้อมกันไม่มีจริงตอนนี้
+## (ได้ขนมปังหลังวางกล่องเสร็จแล้ว) แต่ใช้ช่องเดียวกันคือการบอกว่า
+## "ของสองอย่างนี้ห้ามมีพร้อมกันตลอดไป" ซึ่งไม่มีใครรับปากไว้
+@export var bread_slot: int = 1
+
 @export_group("กรอบตอนเลือก")
 ## สีกรอบของช่องที่ผู้เล่นเลือกอยู่
 @export var selected_border_color: Color = Color("fbebe3")
@@ -55,6 +63,12 @@ func _ready() -> void:
 	## รอสัญญาณอย่างเดียว = เดินขึ้นชั้น 2 ปุ๊บกล่องหายจากช่องทั้งที่ยังถืออยู่ในมือ
 	_refresh_box(GameState.carrying_box)
 	GameState.carrying_box_changed.connect(_refresh_box)
+
+	_refresh_bread()
+	## ⚠️ ใช้ `flag_changed` ตัวรวม ไม่ได้ทำสัญญาณเฉพาะให้ `has_bread`
+	## ธงเนื้อเรื่องจะมีเพิ่มอีกเรื่อย ๆ ทำสัญญาณเฉพาะทุกตัวคือการต่อสายใหม่ทุกครั้ง
+	## ที่เพิ่มไอเทม · `carrying_box` ยังใช้สัญญาณเฉพาะเพราะมีที่ใช้อื่นอยู่แล้ว
+	GameState.flag_changed.connect(_on_flag_changed)
 
 
 ## เก็บพาแนลลูกทุกตัว แล้วเตรียมรูป + StyleBox ให้ทีละช่อง
@@ -131,6 +145,20 @@ func _build_styles(panel: Panel) -> void:
 ## ไม่ใช่ "รายการงานที่เคยทำ" · ส่งของแล้วยังค้างอยู่ในมือจะอ่านว่ายังไม่ได้ส่ง
 func _refresh_box(carrying: bool) -> void:
 	set_item(box_slot, box_icon if carrying else null)
+
+
+func _on_flag_changed(flag_name: String) -> void:
+	if flag_name == "has_bread":
+		_refresh_bread()
+
+
+## ได้ขนมปังจากพี่โช = รูปโผล่ที่ช่องที่สอง
+##
+## 🚨 อ่านจาก `GameState` ตอน `_ready()` ด้วย ไม่ใช่รอสัญญาณอย่างเดียว
+## HUD ถูก instance ใหม่ทุกฉาก แต่ธงถูกตั้งไปแล้วตั้งแต่ตอนคุยกับโชที่ชั้น 2
+## รอสัญญาณอย่างเดียว = เดินขึ้นลงบันไดทีขนมปังหายจากช่อง (กับดักเดียวกับกล่อง)
+func _refresh_bread() -> void:
+	set_item(bread_slot, bread_icon if GameState.has_bread else null)
 
 
 ## ใส่/เอาของออกจากช่อง — ส่ง null = ช่องว่าง
