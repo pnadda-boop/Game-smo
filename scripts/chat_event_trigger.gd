@@ -33,6 +33,11 @@ const CHAT := preload("res://Chat.tscn")
 @export var open_delay: float = 1.2
 ## หน่วงหลังประวัติแชทเก่าขึ้นครบ ก่อนข้อความใหม่จะเริ่มเข้ามา
 @export var message_delay: float = 0.8
+## หน่วงหลังผู้เล่นกดตัวเลือกปิดท้าย ก่อนโทรศัพท์จะเก็บเอง
+##
+## ⚠️ **ต้องมีจังหวะนี้** — คำตอบที่กดกลายเป็นข้อความของน้ำฟ้าในห้องแชทด้วย
+## ปิดทันทีจะเห็นบับเบิลของตัวเองแวบเดียวแล้วจอหาย เหมือนกดพลาดมากกว่าเหมือนตอบจบ
+@export var close_after_choice_delay: float = 0.7
 @export var close_fade_time: float = 0.25
 @export_group("")
 
@@ -151,9 +156,37 @@ func _open_chat() -> void:
 	await get_tree().create_timer(message_delay).timeout
 	await view.receive_messages(lines)
 
+	## ออกจากฉากระหว่างที่ข้อความยังทยอยเข้าอยู่ — โหนดนี้ถูกลบไปแล้ว
+	if not is_inside_tree():
+		return
+
 	## อ่านจบแล้วถึงปิดได้ · เปิดรับปุ่มตอนนี้ ไม่ใช่ตั้งแต่แรก
 	_can_close = true
+
+	## บทที่จบด้วยตัวเลือก = ผู้เล่นกด "รับทราบค่ะ" ไปแล้ว ถือว่าอ่านครบแน่นอน
+	## เก็บโทรศัพท์ให้เลย ไม่ต้องให้กด E/Esc ซ้ำอีกที
+	if _ends_with_choice(lines):
+		await get_tree().create_timer(close_after_choice_delay).timeout
+		if is_inside_tree():
+			_request_close()
+		return
+
 	set_process_unhandled_input(true)
+
+
+## บรรทัดสุดท้ายของบทเป็นตัวเลือกไหม
+##
+## 🚨 **ดูที่ "บทเขียนไว้ยังไง" ไม่ใช่ตั้งธงเปิด/ปิดที่โหนด** — บทที่ปิดท้ายด้วยตัวเลือก
+## แปลว่าคนเขียนบทกำหนดจุดจบไว้แล้ว การให้ผู้เล่นกดปิดอีกทีคือขอให้ยืนยันสองรอบ
+## ส่วนบทที่ไม่มีตัวเลือกยังต้องกด E/Esc เองเหมือนเดิม เพราะไม่มีอะไรบอกว่าอ่านจบหรือยัง
+## · ตั้งเป็น `@export` แยกจะกลายเป็นค่าที่ต้องจำให้ตรงกับบททุกครั้งที่แก้บท
+##
+## ⚠️ ดูเฉพาะบรรทัดสุดท้าย — ตัวเลือกกลางบทเป็นการคุยต่อ ไม่ใช่การจบบท
+func _ends_with_choice(lines: Array) -> bool:
+	if lines.is_empty():
+		return false
+	var last: Variant = lines[lines.size() - 1]
+	return last is Dictionary and last.has("choices")
 
 
 ## กด E หรือ Esc = เก็บโทรศัพท์
