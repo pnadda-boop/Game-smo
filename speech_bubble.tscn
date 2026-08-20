@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://1cbdecmmj7k8" path="res://image/Text.png" id="1_gm1uq"]
 [ext_resource type="Script" uid="uid://bbryd00j3ilqw" path="res://speech_bubble.gd" id="1_hxg5a"]
-[ext_resource type="FontFile" uid="uid://cu2j0doy2hnhw" path="res://font/2005_iannnnnAMD.ttf" id="3_ra651"]
+[ext_resource type="FontFile" uid="uid://bsrkkuprikvr" path="res://font/PK Nakhon Pathom Demo.ttf" id="3_ra651"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hxg5a"]
 texture = ExtResource("1_gm1uq")
@@ -35,7 +35,7 @@ texture_filter = 1
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_ra651")
-theme_override_font_sizes/font_size = 32
+theme_override_font_sizes/font_size = 18
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3

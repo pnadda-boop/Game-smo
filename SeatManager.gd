@@ -10,10 +10,37 @@ extends Node
 var _seats: Dictionary = {}
 
 
+## ช่องที่กำลังมี NPC ถูกลากมาลอยอยู่เหนือ (null = ไม่มี)
+##
+## อยู่ตรงนี้ไม่ใช่ในตัวที่นั่งแต่ละช่อง เพราะเป็นสถานะที่ **มีได้ทีละช่องเดียวทั้งกระดาน**
+## เก็บไว้ที่แต่ละช่องจะต้องคอยไล่บอกช่องอื่นให้ดับเอง ซึ่งเป็นงานของตัวกลางอยู่แล้ว
+var _hovered_seat: Seat = null
+
+
 ## เรียกจาก seat.gd ตอน _ready() เพื่อลงทะเบียนที่นั่งเข้าระบบอัตโนมัติ
 func register_seat(seat: Seat) -> void:
 	var key := Vector2i(seat.row, seat.column)
 	_seats[key] = seat
+
+
+## บอกว่าตอนนี้ลาก NPC มาลอยเหนือช่องไหน — `click.gd` เรียกทุกเฟรมระหว่างลาก
+## ส่ง null ตอนปล่อยเมาส์
+func set_hovered_seat(seat: Seat) -> void:
+	if _hovered_seat == seat:
+		return
+
+	var previous: Seat = _hovered_seat
+	_hovered_seat = seat
+
+	## อัปเดตเฉพาะช่องที่สถานะเปลี่ยนจริง ไม่ไล่รีเฟรชทั้งกระดานทุกเฟรม
+	if is_instance_valid(previous):
+		previous.refresh_visual()
+	if is_instance_valid(seat):
+		seat.refresh_visual()
+
+
+func is_hovered(seat: Seat) -> bool:
+	return _hovered_seat == seat
 
 
 func get_seat(row: int, column: int) -> Seat:
@@ -153,9 +180,18 @@ func check_all() -> bool:
 	for seat in _seats.values():
 		var correct := check_seat(seat)
 		seat.set_highlight(correct)
-		if seat.current_npc and not correct:
-			seat.current_npc.set_seated_mood(correct)  
+
+		## 🚨 ต้องอัปเดตอารมณ์ **ทุกกรณี** ไม่ใช่เฉพาะตอนผิด
+		## ของเดิมเขียน `if ... and not correct: set_seated_mood(correct)`
+		## ซึ่ง `correct` ตรงนั้นเป็น false เสมอ = ตั้งได้แค่ `sit_angry` ทางเดียว
+		## พอเพื่อนบ้านย้ายออกแล้วคนที่เหลือกลายเป็นนั่งถูก หน้าก็ยังบึ้งค้างตลอดไป
+		## (เห็นชัดขึ้นตั้งแต่มีช่องยืน เพราะย้ายคนออกจากที่นั่งได้โดยไม่ต้องเอาไปนั่งที่อื่น)
+		if seat.current_npc:
+			seat.current_npc.set_seated_mood(correct)
+
+		if not correct:
 			all_correct = false
+
 	return all_correct
 
 
