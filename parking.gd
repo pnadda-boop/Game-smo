@@ -34,11 +34,31 @@ const DIALOGUE_BOX := preload("res://DialogueBox.tscn")
 @export var arrive_show_portrait: bool = true
 @export_group("")
 
+## --- เพลงประจำช่วง ---
+## ฉากนี้เป็น**ฉากแรกหลังออกจาก `wokeup`** จึงเป็นที่ที่เปลี่ยนเพลงประจำช่วงของเนื้อเรื่อง
+##
+## ⚠️ เพลงนี้ **ไม่ได้เป็นของฉากนี้** — สั่งครั้งเดียวแล้วเล่นยาวข้ามฉากไปเรื่อย ๆ
+## (ตัวเล่นแขวนอยู่ที่ `root` ไม่ตายตอนเปลี่ยนฉาก) จนกว่าจะมีใครเรียก `Music.play_track()` ด้วยคีย์อื่น
+##
+## 🚨 **สั่งที่ฉากปลายทาง ไม่ใช่ที่ `phone.gd` ตอนกำลังจะเปลี่ยนฉาก**
+## ฉาก `wokeup` มีเพลงของตัวเอง (โหนด `BG` ในซีน) สั่งจากที่นั่นจะเริ่มดังตั้งแต่ยังอยู่ในฉากนั้น
+## แล้วซ้อนกับเพลงเดิมระหว่างเฟด · แลกกับการมีช่วงเงียบสั้น ๆ ตอนจอดำ ซึ่งเป็นรอยต่อฉากอยู่แล้ว
+@export_group("เพลงประจำช่วง")
+## คีย์ใน `Music.TRACKS` · ปล่อยว่าง = ไม่เปลี่ยนเพลง
+@export var music_track: String = "rest"
+@export var music_fade: float = 2.5
+@export_group("")
+
 var bus_leave := false
 var _dialogue_box: Node = null
 
 
 func _ready() -> void:
+	## ⚠️ ต้องอยู่**ก่อน** early return ข้างล่าง — เพลงต้องเล่นไม่ว่าจะเข้าฉากนี้มาทางไหน
+	## ไม่ใช่เฉพาะตอนมาจากแชท · เรียกซ้ำตอนเดินกลับเข้ามาใหม่ก็ไม่รีสตาร์ท (`Music` กันให้แล้ว)
+	if music_track != "":
+		Music.play_track(music_track, music_fade)
+
 	if GameState.pending_intro != GameState.INTRO_ARRIVE_BUS:
 		return
 
