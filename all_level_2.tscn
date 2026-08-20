@@ -17,4 +17,3 @@ y_sort_enabled = true
 
 [node name="Cho" parent="level2_2" unique_id=182425063 instance=ExtResource("3_xmjne")]
 position = Vector2(147, 1482)
-initial_facing = null

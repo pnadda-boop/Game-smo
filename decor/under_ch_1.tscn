@@ -154,7 +154,7 @@ tile_set = SubResource("TileSet_0my4k")
 [node name="Wawa" parent="." unique_id=945691179 instance=ExtResource("3_eqw3b")]
 position = Vector2(-1099, 245)
 dialogue_id_override = "wawa_under_ch1"
-dialogue_id_after = "wawa_idle "
+dialogue_id_after = "wawa_idle"
 
 [node name="Box" type="AnimatedSprite2D" parent="." unique_id=1263708141]
 z_index = 1
