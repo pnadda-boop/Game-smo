@@ -16,18 +16,44 @@
 
 ```
 DialogueBox                CanvasLayer      ← attach dialogue_system.gd · กลุ่ม "dialogue_ui"
-└── Root                   Control          ← Full Rect · mouse_filter: Ignore
-    │
-    ├── Portraits          Control          ← ซ่อนก้อนนี้ = โหมดข้อความล้วน
-    │   ├── Namfha         AnimatedSprite2D
-    │   └── Wawa           AnimatedSprite2D
-    │
-    └── Box                Control          ← 🔒 กรอบตำแหน่ง ขนาดคงที่
-        ├── TextPanel      PanelContainer   ← 🔒 กล่องข้อความ (Full Rect ของ Box)
-        │   └── TextLabel  RichTextLabel
-        └── NamePlate      PanelContainer   ← 📐 ป้ายชื่อ ยืดตามชื่อ
-            └── NameLabel  Label
+├── Root                   Control          ← Full Rect · mouse_filter: Ignore
+│   │
+│   ├── Portraits          Control          ← ซ่อนก้อนนี้ = โหมดข้อความล้วน
+│   │   ├── Namfha         AnimatedSprite2D
+│   │   └── Wawa           AnimatedSprite2D
+│   │
+│   └── Box                Control          ← 🔒 กรอบตำแหน่ง ขนาดคงที่
+│       ├── TextPanel      PanelContainer   ← 🔒 กล่องข้อความ (Full Rect ของ Box)
+│       │   └── TextLabel  RichTextLabel
+│       └── NamePlate      PanelContainer   ← 📐 ป้ายชื่อ ยืดตามชื่อ
+│           └── NameLabel  Label
+│
+└── ChoiceBox              Control          ← ⚠️ ลูกของ DialogueBox **ไม่ใช่ของ Root**
+    ├── LeftBox            VBoxContainer
+    │   ├── Choice0        Button           ← ตัวเลือกข้อ 0
+    │   └── Choice1        Button           ← ตัวเลือกข้อ **2**
+    └── RightBox           VBoxContainer
+        ├── Choice2        Button           ← ตัวเลือกข้อ **1**
+        └── Choice3        Button           ← ตัวเลือกข้อ 3
+
+   (ที่ไหนก็ได้ในกิ่งนี้)
+   Next                    TextureButton    ← ปุ่มไปต่อ · ชื่อต้องเป็น "Next" เป๊ะ ๆ
+                                              (Button ก็ได้ — โค้ดรับ BaseButton ทั้งสองสาย)
 ```
+
+> 🚨 **ชื่อโหนดปุ่มไม่ตรงกับ index ของตัวเลือก** — ตั้งใจให้ 2 ตัวเลือกอยู่คนละฝั่งซ้าย-ขวา
+> (`ตอบตกลง | ปฏิเสธ`) ไม่ใช่กองกันฝั่งซ้ายแล้วขวาโล่ง
+> ลำดับจริงอยู่ที่ `CHOICE_BUTTON_PATHS` ใน `dialogue_system.gd` — **อยากเปลี่ยนการจัดวางแก้ที่นั่นที่เดียว**
+> อย่าเปลี่ยนชื่อโหนดในซีนเพื่อให้ตรง index เพราะจะทำให้ path ในสคริปต์พังทันที
+
+> 🚨 **ปุ่ม `Next` ตอนนี้เป็น `TextureButton` ที่ติ๊ก `Ignore Texture Size`**
+> โหมดนั้น **ไม่ยืดตามขนาดรูปให้เอง** — ลืมลากขนาดจะได้กรอบ 0×0 มองไม่เห็นและกดไม่โดน
+> ทั้งที่ใส่รูปไว้แล้ว (เกิดจริง 2026-08-16) · โค้ดยืดให้เท่ารูปพร้อมเตือน แต่ควรตั้งขนาดในซีนเอง
+> หรือปิด `Ignore Texture Size` ไปเลยถ้าอยากให้เท่ารูปพอดี
+
+> ℹ️ **ปุ่ม `Next` วางไว้ตรงไหนก็ได้** (มุมขวาล่างของ `TextPanel` / ลอยใต้ `Root`) —
+> `dialogue_system.gd` หาด้วย `find_child("Next")` ไม่ได้ผูก path ไว้ **แต่ชื่อต้องตรงเป๊ะ**
+> ไม่ต้องต่อสัญญาณ `pressed` และไม่ต้องตั้ง `focus_mode` เอง โค้ดจัดการให้แล้วตอน `_ready()`
 
 > ⚠️ **`NamePlate` ต้องอยู่ทีหลัง `TextPanel` ในผัง** เพราะ Godot วาดตามลำดับ node
 > ป้ายชื่อจึงทับขอบกล่องข้อความได้สวยแบบที่เห็นในเกมทั่วไป

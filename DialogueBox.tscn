@@ -5,7 +5,8 @@
 [ext_resource type="Texture2D" uid="uid://upgriv07pbgq" path="res://image_fullAvatar/Full_Cho.png" id="3_mx0kw"]
 [ext_resource type="Texture2D" uid="uid://c7td7p22b5xvy" path="res://image_fullAvatar/Full_Kirin.png" id="4_w4oxd"]
 [ext_resource type="Texture2D" uid="uid://bxf0t06f47s11" path="res://image_fullAvatar/Full_Namfha.png" id="5_fsbdh"]
-[ext_resource type="FontFile" uid="uid://cu2j0doy2hnhw" path="res://font/2005_iannnnnAMD.ttf" id="6_w4oxd"]
+[ext_resource type="FontFile" uid="uid://bsrkkuprikvr" path="res://font/PK Nakhon Pathom Demo.ttf" id="6_imwg8"]
+[ext_resource type="Texture2D" uid="uid://dmfdcpe2chfw6" path="res://image_ui/ArrowUi.png" id="7_imwg8"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0qrqu"]
 atlas = ExtResource("2_0qrqu")
@@ -384,6 +385,9 @@ content_margin_right = 22.0
 content_margin_bottom = 22.0
 bg_color = Color(0, 0, 0, 0.8666667)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_l44sp"]
+bg_color = Color(0, 0, 0, 0.92156863)
+
 [node name="DialogueBox" type="CanvasLayer" unique_id=1681219766 groups=["dialogue_ui"]]
 script = ExtResource("1_37rai")
 
@@ -399,7 +403,6 @@ mouse_filter = 2
 [node name="Portraits" type="Node2D" parent="Root" unique_id=1589941656]
 
 [node name="Wawa" type="AnimatedSprite2D" parent="Root/Portraits" unique_id=649787749]
-visible = false
 position = Vector2(325, 951.5)
 scale = Vector2(2.5, 2.5)
 sprite_frames = SubResource("SpriteFrames_as1ww")
@@ -436,11 +439,12 @@ anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 150.0
-offset_top = -217.0
+offset_top = -300.0
 offset_right = -150.0
+offset_bottom = -32.999756
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_constants/separation = -6
+theme_override_constants/separation = 0
 
 [node name="NamePlate" type="PanelContainer" parent="Root/Box" unique_id=538883073]
 layout_mode = 2
@@ -449,7 +453,10 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_uc0vg")
 
 [node name="NameLabel" type="Label" parent="Root/Box/NamePlate" unique_id=668302605]
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
 theme_override_font_sizes/font_size = 28
+vertical_alignment = 1
 
 [node name="TextPanel" type="PanelContainer" parent="Root/Box" unique_id=1216067718]
 custom_minimum_size = Vector2(0, 200)
@@ -458,7 +465,89 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_mx0kw")
 
 [node name="TextLabel" type="RichTextLabel" parent="Root/Box/TextPanel" unique_id=639612883]
 layout_mode = 2
-theme_override_fonts/normal_font = ExtResource("6_w4oxd")
-theme_override_font_sizes/normal_font_size = 54
+theme_override_fonts/normal_font = ExtResource("6_imwg8")
+theme_override_font_sizes/normal_font_size = 28
 bbcode_enabled = true
 scroll_active = false
+
+[node name="ChoiceBox" type="Control" parent="." unique_id=2034113769]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+
+[node name="LeftBox" type="VBoxContainer" parent="ChoiceBox" unique_id=725866972]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 700.0
+offset_top = 200.0
+offset_right = 900.0
+offset_bottom = 220.0
+grow_vertical = 2
+alignment = 1
+
+[node name="Choice0" type="Button" parent="ChoiceBox/LeftBox" unique_id=1825635602]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("6_imwg8")
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_l44sp")
+button_mask = 5
+
+[node name="Choice1" type="Button" parent="ChoiceBox/LeftBox" unique_id=1462804497]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("6_imwg8")
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_l44sp")
+button_mask = 5
+
+[node name="RightBox" type="VBoxContainer" parent="ChoiceBox" unique_id=1223151649]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -920.0
+offset_top = 200.0
+offset_right = -720.0
+offset_bottom = 220.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="Choice2" type="Button" parent="ChoiceBox/RightBox" unique_id=412304311]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("6_imwg8")
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_l44sp")
+button_mask = 5
+
+[node name="Choice3" type="Button" parent="ChoiceBox/RightBox" unique_id=1672342984]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("6_imwg8")
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_l44sp")
+button_mask = 5
+
+[node name="Next" type="TextureButton" parent="." unique_id=259877102]
+offset_left = 1680.0
+offset_top = 979.0
+offset_right = 1680.0
+offset_bottom = 979.0
+size_flags_horizontal = 8
+size_flags_vertical = 4
+texture_normal = ExtResource("7_imwg8")
+ignore_texture_size = true
+flip_h = true
